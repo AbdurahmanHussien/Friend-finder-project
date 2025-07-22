@@ -55,5 +55,30 @@ public class PostController {
 	public ResponseEntity<List<PostDto>> getPostsByUser(@PathVariable Long userId) {
 		return ResponseEntity.ok(postService.getPostsByUser(userId));
 	}
+
+	@GetMapping("/timeline")
+	public ResponseEntity<List<PostDto>> getTimelinePosts(@AuthenticationPrincipal CustomUserDetails userDetails) {
+
+		Long userId = userDetails.getId();
+		return ResponseEntity.ok(postService.getTimelinePosts(userId));
+	}
+
+	@PostMapping("/{postId}/like")
+	public ResponseEntity<String> likePost(@PathVariable Long postId,
+	                                     @AuthenticationPrincipal CustomUserDetails userDetails) {
+
+		Long userId = userDetails.getId();
+		postService.likePost(postId, userId);
+		return ResponseEntity.ok("Post liked successfully");
+	}
+
+	@PostMapping("/{postId}/dislike")
+	public ResponseEntity<String> unLikePost(@PathVariable Long postId,
+	                                       @AuthenticationPrincipal CustomUserDetails userDetails) {
+
+		Long userId = userDetails.getId();
+		postService.unlikePost(postId, userId);
+		return ResponseEntity.ok("Post disliked successfully");
+	}
 }
 

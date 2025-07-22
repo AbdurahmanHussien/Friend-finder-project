@@ -28,7 +28,7 @@ public class CommentDto {
 
 	private Long userId;
 
-	private List<Long> repliesIds;
+	private List<CommentsReplyDto> replies;
 }
 
 

@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 
 @Data
@@ -32,6 +33,7 @@ public class PostDto {
 
 	private String mediaType;  //image, video
 
+	private List<CommentDto> comments;
 
 	private Long userId;
 

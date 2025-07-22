@@ -38,6 +38,12 @@ public class Comment {
 
 	@OneToMany(mappedBy = "comment", cascade = CascadeType.ALL, orphanRemoval = true)
 	private List<CommentsReply> replies;
+
+	@PrePersist
+	protected void onCreate() {
+		this.createdAt = LocalDateTime.now();
+
+	}
 }
 
 

@@ -17,4 +17,10 @@ public interface IPostService {
 	PostDto updatePost(Long postId, String newContent, MultipartFile file)  throws IOException ;
 
 	void deletePost(Long postId) ;
+
+	void likePost(Long postId, Long userId);
+
+	List<PostDto> getTimelinePosts(Long userId);
+
+	void unlikePost(Long postId, Long userId);
 }

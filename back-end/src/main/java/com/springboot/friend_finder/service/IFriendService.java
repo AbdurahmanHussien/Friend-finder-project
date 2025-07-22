@@ -16,4 +16,6 @@ public interface IFriendService {
 	void deleteRequest(Long senderId, Long receiverId);
 
 	List<UserDto> getSuggestions(Long userId);
+
+
 }

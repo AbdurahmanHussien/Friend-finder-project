@@ -1,10 +1,7 @@
 package com.springboot.friend_finder.entity.auth;
 
 
-import com.springboot.friend_finder.entity.Comment;
-import com.springboot.friend_finder.entity.CommentsReply;
-import com.springboot.friend_finder.entity.Friendship;
-import com.springboot.friend_finder.entity.Post;
+import com.springboot.friend_finder.entity.*;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -50,15 +47,18 @@ public class User {
     @OneToMany(mappedBy = "receiver")
     private List<Friendship> receivedRequests;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Post> post;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Comment> comments;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<CommentsReply> replies;
 
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
+    private Set<Like> likes = new HashSet<>();
 
 
 
