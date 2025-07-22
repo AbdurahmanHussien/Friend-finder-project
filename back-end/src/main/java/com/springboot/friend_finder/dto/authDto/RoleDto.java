@@ -1,7 +1,5 @@
 package com.springboot.friend_finder.dto.authDto;
 
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -17,8 +15,8 @@ public class RoleDto {
 
         private Long id;
 
-        @Enumerated(EnumType.STRING)
-        private String roleName;
+        private String roleType;
+
 
 
 

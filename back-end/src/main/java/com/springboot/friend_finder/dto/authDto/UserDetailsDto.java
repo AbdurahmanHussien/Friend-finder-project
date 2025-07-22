@@ -1,7 +1,6 @@
 package com.springboot.friend_finder.dto.authDto;
 
-import com.springboot.friend_finder.entity.auth.User;
-import jakarta.validation.constraints.Email;
+import com.springboot.friend_finder.constant.Gender;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -20,13 +19,9 @@ public class UserDetailsDto {
 
     private String phoneNum;
 
-    @Email
-    private String email;
+    private Gender gender;
 
-    private String address;
-
-    private User user;
-
+    private String profileImage;
 
 
 }

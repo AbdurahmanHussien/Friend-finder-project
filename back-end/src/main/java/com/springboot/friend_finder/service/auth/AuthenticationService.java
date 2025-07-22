@@ -14,8 +14,6 @@ import com.springboot.friend_finder.request.LoginRequest;
 import com.springboot.friend_finder.request.RegisterRequest;
 import com.springboot.friend_finder.response.AuthResponse;
 import lombok.AllArgsConstructor;
-import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -45,14 +43,12 @@ public class AuthenticationService implements IAuthenticationService {
 
 
     @Override
-    @Cacheable(value = "user" , key = "#id")
     public User getUserById(Long id) {
        return userRepository.findById(id)
                .orElseThrow(()-> new ResourceNotFoundException("user.not.found"));
     }
 
     @Override
-    @CacheEvict(value = "user", allEntries = true, key = "#email")
     public void resetPassword(String email) {
         User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new ResourceNotFoundException("user.not.found"));
@@ -103,7 +99,6 @@ public class AuthenticationService implements IAuthenticationService {
                 .userId(savedUser.getId())
                 .token(accessToken)
                 .refreshToken(refreshToken)
-                .UserRole(roles)
                 .build();
     }
 
@@ -119,22 +114,20 @@ public class AuthenticationService implements IAuthenticationService {
                     )
             );
         } catch (BadCredentialsException ex) {
-            throw new BadCredentialsException("invalid.password");
+            throw new BadCredentialsException("Invalid password");
         }
         List<String> roles = user.getRoles().stream().map(Role::getRoleType).map(RoleType::name).toList();
 
-        String accessToken = jwtUtils.generateToken(user,  30 * 60 * 1000);   // 30 minutes
+        String accessToken = jwtUtils.generateToken(user,  7* 30 * 60 * 1000);  // untill testing                          // 30 minutes
         String refreshToken = jwtUtils.generateToken(user, 7 * 24 * 60 * 60 * 1000);
 
         return AuthResponse.builder()
                     .userId(user.getId())
                     .token(accessToken)
                     .refreshToken(refreshToken)
-                    .UserRole(roles)
                     .build();
         }
 
-        @CacheEvict(value = "user", allEntries = true)
     public void deleteUser(Long id) {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("user.not.found"));
@@ -153,7 +146,7 @@ public class AuthenticationService implements IAuthenticationService {
             }
 
             if (jwtUtils.isTokenValid(refreshToken, customUserDetails)) {
-                String newAccessToken = jwtUtils.generateToken(user,    30 * 60 * 1000); // 30 minutes
+                String newAccessToken = jwtUtils.generateToken(user,    30 * 60 * 1000);   // 30 minutes
                 return ResponseEntity.ok(Map.of("accessToken", newAccessToken));
             }
 

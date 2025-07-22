@@ -11,6 +11,7 @@ spring:
     type: redis
 
 
+
   messages:
     basename: i18n/messages
     encoding: UTF-8
@@ -26,6 +27,16 @@ spring:
       hibernate:
         format_sql: true
 
+file:
+  upload-dir: D:/FriendFinderUploads/posts
+
+
+logging:
+  level:
+    org.springframework.security: DEBUG
+    org.springframework.security.web: DEBUG
+    org.springframework.security.authentication: DEBUG
+    org.springframework.security.authorization: DEBUG
 
 jwt:
   secret: U29tZVN1cGVyU2VjdXJlU2VjcmV0S2V5MTIzNDU2tkodlsbhnbnxnbfhbdf

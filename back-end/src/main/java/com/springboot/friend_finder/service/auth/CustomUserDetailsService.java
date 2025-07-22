@@ -2,7 +2,6 @@ package com.springboot.friend_finder.service.auth;
 
 import com.springboot.friend_finder.repository.auth.UserRepository;
 import lombok.AllArgsConstructor;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -17,7 +16,6 @@ public class CustomUserDetailsService implements UserDetailsService{
 
 
     @Override
-    @Cacheable(value = "user", key = "#email")
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         return userRepository.findByEmail(email)
                 .map(CustomUserDetails::new)

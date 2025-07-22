@@ -26,6 +26,8 @@ public class UserDetails implements Serializable {
     @Enumerated(EnumType.STRING)
     private Gender gender;
 
+    private String profileImage;
+
 
     @OneToOne(mappedBy = "userDetails")
     private User user;

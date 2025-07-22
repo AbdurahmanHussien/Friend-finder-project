@@ -11,9 +11,9 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-@OpenAPIDefinition(info =@Info(title = "Restaurant API",
+@OpenAPIDefinition(info =@Info(title = "Friend Finder API",
         version = "1.0",
-        description = "API for Restaurant", contact =@Contact(name = "Abdurahman Hussein",
+        description = "API for Friend Finder", contact =@Contact(name = "Abdurahman Hussein",
         email = "abdo.hussien123.ah@gmail.com")))
 public class SwaggerConfig {
 

@@ -1,14 +1,14 @@
 package com.springboot.friend_finder.dto.authDto;
 
 
-import com.springboot.friend_finder.entity.auth.Role;
-import com.springboot.friend_finder.entity.auth.UserDetails;
+import com.springboot.friend_finder.dto.FriendshipDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.List;
+import java.util.Set;
 
 
 @Data
@@ -19,14 +19,23 @@ public class UserDto {
 
     private Long id;
 
-    
-    private String username;
+    private String email;
 
     private String password;
 
-    private UserDetails userDetails;
+    private UserDetailsDto userDetails;
 
-    List<Role> roles ;
+   private Set<RoleDto> roles;
+
+    private List<Long> postsId;
+
+    private List<Long> commentsId;
+
+    private List<Long> repliesId;
+
+    private List<FriendshipDto> sentRequests;
+
+    private List<FriendshipDto>receivedRequests;
 
 
 
