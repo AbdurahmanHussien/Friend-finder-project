@@ -7,7 +7,7 @@ import org.mapstruct.Mapping;
 
 import java.util.List;
 
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", uses = { CommentMapper.class, UserMapper.class })
 public interface PostMapper {
 
 	@Mapping(target = "userId", source = "user.id")

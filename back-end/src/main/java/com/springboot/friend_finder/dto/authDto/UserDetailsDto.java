@@ -17,6 +17,8 @@ public class UserDetailsDto {
 
     private String name;
 
+    private String email;
+
     private String phoneNum;
 
     private Gender gender;

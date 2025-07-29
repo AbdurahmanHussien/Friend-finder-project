@@ -18,9 +18,8 @@ public interface IPostService {
 
 	void deletePost(Long postId) ;
 
-	void likePost(Long postId, Long userId);
+	void likeAndUnlikePost(Long postId, Long userId);
 
 	List<PostDto> getTimelinePosts(Long userId);
 
-	void unlikePost(Long postId, Long userId);
 }

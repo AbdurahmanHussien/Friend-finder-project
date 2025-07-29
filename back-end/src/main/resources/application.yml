@@ -29,7 +29,7 @@ spring:
 
 file:
   upload-dir: D:/FriendFinderUploads/posts
-
+  avatar-dir: D:/FriendFinderUploads/avatars
 
 logging:
   level:

@@ -116,7 +116,6 @@ public class AuthenticationService implements IAuthenticationService {
         } catch (BadCredentialsException ex) {
             throw new BadCredentialsException("Invalid password");
         }
-        List<String> roles = user.getRoles().stream().map(Role::getRoleType).map(RoleType::name).toList();
 
         String accessToken = jwtUtils.generateToken(user,  7* 30 * 60 * 1000);  // untill testing                          // 30 minutes
         String refreshToken = jwtUtils.generateToken(user, 7 * 24 * 60 * 60 * 1000);

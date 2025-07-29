@@ -22,61 +22,52 @@ public class FriendshipController {
 
 	@PostMapping("/request")
 	public ResponseEntity<FriendshipDto> sendRequest( @AuthenticationPrincipal CustomUserDetails sender, @RequestParam Long receiverId) {
-		Long senderId = sender.getId();
 
-		FriendshipDto result = friendService.sendFriendRequest(senderId, receiverId);
+		FriendshipDto result = friendService.sendFriendRequest(sender.getId(), receiverId);
 		return ResponseEntity.ok(result);
 	}
 
 	@PostMapping("/request/accept")
 	public ResponseEntity<FriendshipDto> acceptRequest(@RequestParam Long senderId, @AuthenticationPrincipal CustomUserDetails receiver) {
-		Long receiverId = receiver.getId();
 
-		FriendshipDto result = friendService.acceptFriendRequest(senderId, receiverId);
+		FriendshipDto result = friendService.acceptFriendRequest(senderId, receiver.getId());
 		return ResponseEntity.ok(result);
 	}
 
 	@PostMapping("/request/reject")
 	public ResponseEntity<FriendshipDto> rejectRequest(@RequestParam Long senderId, @AuthenticationPrincipal CustomUserDetails receiver) {
 
-		Long receiverId = receiver.getId();
-		System.out.println(senderId);
-		FriendshipDto result = friendService.rejectFriendRequest(senderId, receiverId);
+		FriendshipDto result = friendService.rejectFriendRequest(senderId, receiver.getId());
 		return ResponseEntity.ok(result);
 	}
 
 	@GetMapping
 	public ResponseEntity<List<UserDto>> getFriends(@AuthenticationPrincipal CustomUserDetails user) {
-		Long userId = user.getId();
-		List<UserDto> result = friendService.getFriends(userId);
+		List<UserDto> result = friendService.getFriends(user.getId());
 		return ResponseEntity.ok(result);
 	}
 
 	@GetMapping("/requests/pending")
 	public ResponseEntity<List<FriendshipDto>> getPendingRequests(@AuthenticationPrincipal CustomUserDetails user) {
-		Long userId = user.getId();
-		List<FriendshipDto> result = friendService.getPendingRequests(userId);
+		List<FriendshipDto> result = friendService.getPendingRequests(user.getId());
 		return ResponseEntity.ok(result);
 	}
 
 	@GetMapping("/requests/sent")
 	public ResponseEntity<List<FriendshipDto>> getSentRequests(@AuthenticationPrincipal CustomUserDetails user) {
-		Long userId = user.getId();
-		List<FriendshipDto> result = friendService.getSentRequests(userId);
+		List<FriendshipDto> result = friendService.getSentRequests(user.getId());
 		return ResponseEntity.ok(result);
 	}
 
 	@DeleteMapping("/friend/delete")
 	public ResponseEntity<Void> removeFriend(@AuthenticationPrincipal CustomUserDetails user, @RequestParam Long friendId) {
-		Long userId = user.getId();
-		friendService.deleteRequest(userId, friendId);
+		friendService.deleteRequest(user.getId(), friendId);
 		return ResponseEntity.ok().build();
 	}
 
 	@GetMapping("/suggestions")
 	public ResponseEntity<List<UserDto>> getSuggestions(@AuthenticationPrincipal CustomUserDetails user) {
-		Long userId = user.getId();
-		List<UserDto> result = friendService.getSuggestions(userId);
+		List<UserDto> result = friendService.getSuggestions(user.getId());
 		return ResponseEntity.ok(result);
 	}
 }

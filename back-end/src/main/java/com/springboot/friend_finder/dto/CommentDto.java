@@ -1,5 +1,6 @@
 package com.springboot.friend_finder.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -18,6 +19,8 @@ public class CommentDto {
 
 	private String content;
 
+
+	@JsonProperty(access = JsonProperty.Access.READ_ONLY)
 	private LocalDateTime createdAt;
 
 	private Integer likeCount;
@@ -28,6 +31,7 @@ public class CommentDto {
 
 	private Long userId;
 
+	@JsonProperty(access = JsonProperty.Access.READ_ONLY)
 	private List<CommentsReplyDto> replies;
 }
 

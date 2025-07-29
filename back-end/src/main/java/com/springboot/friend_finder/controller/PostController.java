@@ -25,8 +25,7 @@ public class PostController {
 			@RequestParam(required = false) String content,
 			@RequestParam(required = false) MultipartFile file) throws IOException {
 
-		Long userId = userDetails.getId();
-		PostDto post = postService.createPost(userId, content, file);
+		PostDto post = postService.createPost(userDetails.getId(), content, file);
 		return ResponseEntity.ok(post);
 	}
 
@@ -59,26 +58,16 @@ public class PostController {
 	@GetMapping("/timeline")
 	public ResponseEntity<List<PostDto>> getTimelinePosts(@AuthenticationPrincipal CustomUserDetails userDetails) {
 
-		Long userId = userDetails.getId();
-		return ResponseEntity.ok(postService.getTimelinePosts(userId));
+		return ResponseEntity.ok(postService.getTimelinePosts(userDetails.getId()));
 	}
 
-	@PostMapping("/{postId}/like")
+	@PostMapping("/{postId}/likeUnlike")
 	public ResponseEntity<String> likePost(@PathVariable Long postId,
 	                                     @AuthenticationPrincipal CustomUserDetails userDetails) {
 
-		Long userId = userDetails.getId();
-		postService.likePost(postId, userId);
-		return ResponseEntity.ok("Post liked successfully");
+		postService.likeAndUnlikePost(postId, userDetails.getId());
+		return ResponseEntity.ok("done");
 	}
 
-	@PostMapping("/{postId}/dislike")
-	public ResponseEntity<String> unLikePost(@PathVariable Long postId,
-	                                       @AuthenticationPrincipal CustomUserDetails userDetails) {
-
-		Long userId = userDetails.getId();
-		postService.unlikePost(postId, userId);
-		return ResponseEntity.ok("Post disliked successfully");
-	}
 }
 

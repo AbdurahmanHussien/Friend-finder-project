@@ -6,17 +6,19 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.CreationTimestamp;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "likes")
+@Table(name = "post_likes")
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class Like {
+@EntityListeners(AuditingEntityListener.class)
+public class PostLike {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -30,8 +32,8 @@ public class Like {
 	@JoinColumn(name = "post_id", nullable = false)
 	private Post post;
 
-	@CreationTimestamp
-	@Column(name = "created_at", nullable = false, updatable = false)
+	@CreatedDate
 	private LocalDateTime createdAt;
+
 
 }

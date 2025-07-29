@@ -1,12 +1,21 @@
 package com.springboot.friend_finder.service;
 
+import com.springboot.friend_finder.dto.CommentDto;
+
+import java.util.List;
+
 public interface ICommentService {
 
-	void createComment(Long postId, Long userId, String content);
+	CommentDto createComment(CommentDto commentDto);
 
-	void updateComment(Long commentId, String newContent);
+	CommentDto updateComment(CommentDto commentDto);
 
 	void deleteComment(Long commentId);
 
-	void likeComment(Long commentId, Long userId);
+	void likeAndUnlikeComment(Long commentId, Long userId);
+
+	List<CommentDto> getCommentsByPost(Long postId);
+
+	List<CommentDto> getCommentsByUser(Long userId);
+
 }

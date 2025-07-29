@@ -2,10 +2,10 @@ package com.springboot.friend_finder.entity;
 
 import com.springboot.friend_finder.entity.auth.User;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.annotation.LastModifiedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -18,7 +18,8 @@ import java.util.Set;
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
-public class Post {
+@EntityListeners(AuditingEntityListener.class)
+public class Post{
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,9 +28,6 @@ public class Post {
 	@Lob
 	private String content;
 
-	private LocalDateTime createdAt;
-
-	private LocalDateTime updatedAt;
 
 	private Integer likeCount;
 
@@ -48,12 +46,12 @@ public class Post {
 	private User user;
 
 	@OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
-	private Set<Like> likes = new HashSet<>();
+	private Set<PostLike> postLikes = new HashSet<>();
 
+	@CreatedDate
+	private LocalDateTime createdAt;
 
-	@PrePersist
-	protected void onCreate() {
-		this.createdAt = LocalDateTime.now();
+	@LastModifiedDate
+	private LocalDateTime updatedAt;
 
-	}
 }

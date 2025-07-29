@@ -25,7 +25,7 @@ public class UserDto {
 
     private UserDetailsDto userDetails;
 
-   private Set<RoleDto> roles;
+    private Set<RoleDto> roles;
 
     private List<Long> postsId;
 

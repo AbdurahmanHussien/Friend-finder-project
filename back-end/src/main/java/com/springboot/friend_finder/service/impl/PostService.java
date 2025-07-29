@@ -1,13 +1,12 @@
 package com.springboot.friend_finder.service.impl;
 
 import com.springboot.friend_finder.dto.PostDto;
-import com.springboot.friend_finder.entity.Like;
 import com.springboot.friend_finder.entity.Post;
+import com.springboot.friend_finder.entity.PostLike;
 import com.springboot.friend_finder.entity.auth.User;
-import com.springboot.friend_finder.exceptions.BadRequestException;
 import com.springboot.friend_finder.exceptions.ResourceNotFoundException;
 import com.springboot.friend_finder.mapper.PostMapper;
-import com.springboot.friend_finder.repository.LikeRepository;
+import com.springboot.friend_finder.repository.PostLikeRepository;
 import com.springboot.friend_finder.repository.PostRepository;
 import com.springboot.friend_finder.repository.auth.UserRepository;
 import com.springboot.friend_finder.service.IPostService;
@@ -19,7 +18,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -32,7 +30,7 @@ public class PostService implements IPostService {
 	private final UserRepository userRepository;
 	private final PostMapper postMapper;
 
-	private final LikeRepository likeRepository;
+	private final PostLikeRepository postLikeRepository;
 
 	@Value("${file.upload-dir}")
 	private String uploadDir;
@@ -64,7 +62,6 @@ public class PostService implements IPostService {
 		Post post = new Post();
 		post.setUser(user);
 		post.setContent(content);
-		post.setUpdatedAt(LocalDateTime.now());
 		post.setLikeCount(0);
 		post.setCommentCount(0);
 
@@ -101,7 +98,6 @@ public class PostService implements IPostService {
 				.orElseThrow(() -> new ResourceNotFoundException("post.not.found"));
 
 		post.setContent(newContent);
-		post.setUpdatedAt(LocalDateTime.now());
 
 		if (file != null && !file.isEmpty()) {
 			// delete the old file
@@ -149,75 +145,62 @@ public class PostService implements IPostService {
 	}
 
 	@Override
-	public void likePost(Long postId, Long userId) {
+	@Transactional
+	public void likeAndUnlikePost(Long postId, Long userId) {
 		Post post = postRepository.findById(postId)
 				.orElseThrow(() -> new ResourceNotFoundException("post.not.found"));
 		User user = userRepository.findById(userId)
 				.orElseThrow(() -> new ResourceNotFoundException("user.not.found"));
 
-		Optional<Like> like = likeRepository.findByUserAndPost(user, post);
-		if (like.isPresent()) {
-			throw new BadRequestException("post.already.liked");
+		Optional<PostLike> existingLike = postLikeRepository.findByUserAndPost(user, post);
 
-		}
-
-		post.setLikeCount(post.getLikeCount() + 1);
-
-		Like newLike = Like.builder()
-				.user(user)
+		if (existingLike.isPresent()) {
+			// Unlike: remove the like and decrement count
+			postLikeRepository.delete(existingLike.get());
+			int newLikeCount = post.getLikeCount() == null || post.getLikeCount() <= 0 
+				? 0 
+				: post.getLikeCount() - 1;
+			post.setLikeCount(newLikeCount);
+		} else {
+			// Like: add new like and increment count
+			PostLike newLike = PostLike.builder()
 				.post(post)
-				.createdAt(LocalDateTime.now())
+				.user(user)
 				.build();
-		likeRepository.save(newLike);
+			postLikeRepository.save(newLike);
+			post.setLikeCount(post.getLikeCount() == null ? 1 : post.getLikeCount() + 1);
+		}
+		
 		postRepository.save(post);
 	}
 
+    // ========================helper methods ========================
 
-	@Override
-	public void unlikePost(Long postId, Long userId) {
-		Post post = postRepository.findById(postId)
-				.orElseThrow(() -> new ResourceNotFoundException("post.not.found"));
-		User user = userRepository.findById(userId)
-				.orElseThrow(() -> new ResourceNotFoundException("user.not.found"));
-		Like like = likeRepository.findByUserAndPost(user, post)
-				.orElseThrow(() -> new BadRequestException("post.not.liked"));
+    private String saveFile(MultipartFile file) throws IOException {
+        String originalName = file.getOriginalFilename();
+        String extension = originalName.substring(originalName.lastIndexOf("."));
+        String uniqueName = UUID.randomUUID().toString() + extension;
+        String fullPath = uploadDir + File.separator + uniqueName;
 
-		post.setLikeCount(Math.max(0, post.getLikeCount() - 1));
+        File dir = new File(uploadDir);
+        if (!dir.exists()) dir.mkdirs();
 
-		likeRepository.delete(like);
+        file.transferTo(new File(fullPath));
+        return uniqueName;
+    }
 
-		postRepository.save(post);
-	}
+    private void deleteFile(String fileName) {
+        if (fileName == null) return;
 
+        File file = new File(uploadDir + File.separator + fileName);
+        if (file.exists()) file.delete();
+    }
 
+    private String getExtension(String fileName) {
+        return fileName.substring(fileName.lastIndexOf("."));
+    }
 
-// ========================helper methods ========================
-
-	private String saveFile(MultipartFile file) throws IOException {
-		String originalName = file.getOriginalFilename();
-		String extension = originalName.substring(originalName.lastIndexOf("."));
-		String uniqueName = UUID.randomUUID().toString() + extension;
-		String fullPath = uploadDir + File.separator + uniqueName;
-
-		File dir = new File(uploadDir);
-		if (!dir.exists()) dir.mkdirs();
-
-		file.transferTo(new File(fullPath));
-		return uniqueName;
-	}
-
-	private void deleteFile(String fileName) {
-		if (fileName == null) return;
-
-		File file = new File(uploadDir + File.separator + fileName);
-		if (file.exists()) file.delete();
-	}
-
-	private String getExtension(String fileName) {
-		return fileName.substring(fileName.lastIndexOf("."));
-	}
-
-	private boolean isVideo(String extension) {
-		return extension.equalsIgnoreCase(".mp4") || extension.equalsIgnoreCase(".mov");
-	}
+    private boolean isVideo(String extension) {
+        return extension.equalsIgnoreCase(".mp4") || extension.equalsIgnoreCase(".mov");
+    }
 }
