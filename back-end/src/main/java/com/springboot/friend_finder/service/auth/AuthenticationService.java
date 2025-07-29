@@ -23,7 +23,6 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
@@ -87,8 +86,6 @@ public class AuthenticationService implements IAuthenticationService {
         if (savedUser.getId() == null) {
             throw new RuntimeException("User not saved");
         }
-
-        List<String> roles = user.getRoles().stream().map(Role::getRoleType).map(RoleType::name).toList();
 
         String accessToken = jwtUtils.generateToken(user, 24 * 60 * 60 * 1000);
         String refreshToken = jwtUtils.generateToken(user, 7 * 24 * 60 * 60 * 1000);
