@@ -15,21 +15,10 @@ public class JpaConfig {
 
     @Bean
     public AuditorAware<String> auditorAware() {
-        return () -> {
-            var auth = SecurityContextHolder.getContext().getAuthentication();
-
-            if (auth == null || !auth.isAuthenticated()) {
-                return Optional.of("anonymousUser");
-            }
-
-            Object principal = auth.getPrincipal();
-
-            if (principal instanceof CustomUserDetails) {
-                return Optional.of(((CustomUserDetails) principal).getUser().getUserDetails().getName());
-            } else {
-                return Optional.of(principal.toString());
-            }
-        };
+        return () -> Optional.ofNullable(SecurityContextHolder.getContext().getAuthentication())
+                .filter(auth -> auth.isAuthenticated() && auth.getPrincipal() instanceof CustomUserDetails)
+                .map(auth -> ((CustomUserDetails) auth.getPrincipal()).getUser().getUserDetails().getName())
+                .or(() -> Optional.of("anonymousUser"));
     }
 
 }
