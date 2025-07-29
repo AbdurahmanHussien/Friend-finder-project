@@ -13,17 +13,15 @@ public interface ReplyMapper {
 
     @Mapping(target = "commentId", source = "comment.id")
     @Mapping(target = "userId", source = "user.id")
-
-     CommentsReplyDto toDto(CommentsReply commentsReply);
+    CommentsReplyDto toDto(CommentsReply commentsReply);
 
     @Mapping(target = "commentId", source = "comment.id")
     @Mapping(target = "userId", source = "user.id")
-     List<CommentsReplyDto> toDtoList(List<CommentsReply> commentsReplies);
+    List<CommentsReplyDto> toDtoList(List<CommentsReply> commentsReplies);
 
     @Mapping(target = "comment.id", source = "commentId")
     @Mapping(target = "user.id", source = "userId")
-
-     CommentsReply toEntity(CommentsReplyDto commentsReplyDto);
+    CommentsReply toEntity(CommentsReplyDto commentsReplyDto);
 
     @Mapping(target = "comment.id", source = "commentId")
     @Mapping(target = "user.id", source = "userId")

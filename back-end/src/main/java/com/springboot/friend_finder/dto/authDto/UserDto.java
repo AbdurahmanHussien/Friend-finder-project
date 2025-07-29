@@ -1,7 +1,6 @@
 package com.springboot.friend_finder.dto.authDto;
 
 
-import com.springboot.friend_finder.dto.FriendshipDto;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -25,7 +24,7 @@ public class UserDto {
 
     private UserDetailsDto userDetails;
 
-    private Set<RoleDto> roles;
+    private Set<Long> roles;
 
     private List<Long> postsId;
 
@@ -33,9 +32,9 @@ public class UserDto {
 
     private List<Long> repliesId;
 
-    private List<FriendshipDto> sentRequests;
+    private List<Long> sentRequestsIds;
 
-    private List<FriendshipDto>receivedRequests;
+    private List<Long> receivedRequestsIds;
 
 
 

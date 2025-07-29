@@ -11,6 +11,7 @@ import java.util.List;
 @Mapper(componentModel = "spring", uses = {ReplyMapper.class})
 public interface CommentMapper {
 
+
 	@Mapping(target="userId", source="user.id")
 	@Mapping(target="postId", source="post.id")
 	@Mapping(target="replies", source="replies")
