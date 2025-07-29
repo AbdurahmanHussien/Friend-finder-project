@@ -3,7 +3,6 @@ package com.springboot.friend_finder.mapper;
 import com.springboot.friend_finder.dto.UserProfileDto;
 import com.springboot.friend_finder.entity.Post;
 import com.springboot.friend_finder.entity.auth.User;
-import com.springboot.friend_finder.entity.auth.UserDetails;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.Mappings;

@@ -16,6 +16,4 @@ public interface ICommentService {
 
 	List<CommentDto> getCommentsByPost(Long postId);
 
-	List<CommentDto> getCommentsByUser(Long userId);
-
 }
