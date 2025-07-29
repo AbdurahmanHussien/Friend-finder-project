@@ -59,11 +59,12 @@ public class PostService implements IPostService {
 		User user = userRepository.findById(userId)
 				.orElseThrow(() -> new ResourceNotFoundException("user.not.found"));
 
-		Post post = new Post();
-		post.setUser(user);
-		post.setContent(content);
-		post.setLikeCount(0);
-		post.setCommentCount(0);
+		Post post = Post.builder()
+				.user(user)
+				.content(content)
+				.likeCount(0)
+				.commentCount(0)
+				.build();
 
 		if (file != null && !file.isEmpty()) {
 			String originalName = file.getOriginalFilename();

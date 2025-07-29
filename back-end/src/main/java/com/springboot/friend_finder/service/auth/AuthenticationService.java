@@ -117,7 +117,7 @@ public class AuthenticationService implements IAuthenticationService {
             throw new BadCredentialsException("Invalid password");
         }
 
-        String accessToken = jwtUtils.generateToken(user,  7* 30 * 60 * 1000);  // untill testing                          // 30 minutes
+        String accessToken = jwtUtils.generateToken(user,  7* 30 * 60 * 1000);  // until testing                          // 30 minutes
         String refreshToken = jwtUtils.generateToken(user, 7 * 24 * 60 * 60 * 1000);
 
         return AuthResponse.builder()
