@@ -111,19 +111,6 @@ public class CommentService implements ICommentService {
                 .collect(Collectors.toList());
     }
 
-    @Override
-    public List<CommentDto> getCommentsByUser(Long userId) {
-        // Verify user exists
-        if (!userRepository.existsById(userId)) {
-            throw new ResourceNotFoundException("user.not.found");
-        }
-        
-        List<Comment> comments = commentRepository.findByUserIdOrderByCreatedAtDesc(userId);
-        
-        return comments.stream()
-                .map(commentMapper::toDto)
-                .collect(Collectors.toList());
-    }
 
     public CommentDto saveComment(CommentDto commentDto) {
         Post post = postRepository.findById(commentDto.getPostId())
