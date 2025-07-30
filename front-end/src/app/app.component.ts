@@ -9,7 +9,7 @@ import {SidebarComponent} from './components/sidebar/sidebar.component';
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, LoaderComponent, NgIf, FooterComponent, HeaderComponent, NgClass, SidebarComponent],
+  imports: [RouterOutlet, LoaderComponent, NgIf, FooterComponent, HeaderComponent, NgClass],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })

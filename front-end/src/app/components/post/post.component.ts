@@ -4,7 +4,6 @@ import {FormsModule} from '@angular/forms';
 import {TimelineService} from '../../service/timeline.service';
 import {ToastrService} from 'ngx-toastr';
 import {AuthService} from '../../service/auth.service';
-import {User} from '../../model/User';
 
 @Component({
   selector: 'app-post',
