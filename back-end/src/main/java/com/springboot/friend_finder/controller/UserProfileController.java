@@ -1,6 +1,7 @@
 package com.springboot.friend_finder.controller;
 
 import com.springboot.friend_finder.dto.UserProfileDto;
+import com.springboot.friend_finder.dto.authDto.UserPost;
 import com.springboot.friend_finder.service.IUserProfileService;
 import com.springboot.friend_finder.service.auth.CustomUserDetails;
 import lombok.RequiredArgsConstructor;
@@ -31,5 +32,10 @@ public class UserProfileController {
     @PostMapping("/avatar")
     public ResponseEntity<UserProfileDto> addAvatar(@AuthenticationPrincipal CustomUserDetails userDetails, @RequestParam("avatar") MultipartFile file) throws IOException {
         return ResponseEntity.ok(userProfileService.addAvatar(userDetails.getId(), file));
+    }
+
+   @GetMapping("/me")
+    public ResponseEntity<UserPost> getMyProfile(@AuthenticationPrincipal CustomUserDetails userDetails) {
+        return ResponseEntity.ok(userProfileService.getMyProfile(userDetails.getId()));
     }
 }

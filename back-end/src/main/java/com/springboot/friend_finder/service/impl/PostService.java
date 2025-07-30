@@ -82,10 +82,10 @@ public class PostService implements IPostService {
 
 			if (extension.equalsIgnoreCase(".mp4") || extension.equalsIgnoreCase(".mov")) {
 				post.setMediaType("video");
-				post.setMediaUrl(uniqueName);
+				post.setMediaUrl("posts/"+uniqueName);
 			} else {
 				post.setMediaType("image");
-				post.setMediaUrl(uniqueName);
+				post.setMediaUrl("posts/"+uniqueName);
 			}
 		}
 

@@ -3,6 +3,7 @@ package com.springboot.friend_finder.service.impl;
 import com.springboot.friend_finder.constant.RequestStatus;
 import com.springboot.friend_finder.dto.FriendshipDto;
 import com.springboot.friend_finder.dto.authDto.UserDto;
+import com.springboot.friend_finder.dto.authDto.UserPost;
 import com.springboot.friend_finder.entity.Friendship;
 import com.springboot.friend_finder.entity.auth.User;
 import com.springboot.friend_finder.exceptions.BadRequestException;
@@ -144,13 +145,13 @@ public class FriendService implements IFriendService {
 	}
 
 	@Override
-	public List<UserDto> getSuggestions(Long userId) {
+	public List<UserPost> getSuggestions(Long userId) {
 		Pageable topFive = PageRequest.of(0, 5);
 		List<User> users = friendshipRepository.findSuggestedUsers(userId, topFive);
 		if (users.isEmpty()) {
 			throw new BadRequestException("no.suggestions");
 		}
-		return userMapper.toDtoList(users);
+		return userMapper.userToUserPostList(users);
 	}
 
 }

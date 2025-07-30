@@ -1,0 +1,92 @@
+<div class="max-w-2xl mx-auto space-y-8 mt-5 mb-20">
+  <div *ngFor="let p of post" class="dark:bg-[#242526] p-6 rounded-xl shadow border dark:border-[#3a3b3c] border-[#e4e6eb]">
+
+    <div class="flex items-center mb-4">
+      <img [src]="'http://localhost:9090' + p.user.profileImage"
+           (error)="onImageError($event)"
+           alt="profile image"
+           class="w-11 h-11 rounded-full mr-3 border dark:border-[#3a3b3c] border-[#e4e6eb]" />
+      <div>
+        <h3 class="font-bold text-sm dark:text-[#e4e6eb]">{{ p.user.name }}</h3>
+        <p class="text-xs text-[#b0b3b8]">{{ p.createdAt | date:'short' }}</p>
+      </div>
+    </div>
+
+    <p class="text-sm mb-3 dark:text-[#e4e6eb]">{{ p.content }}</p>
+
+    <img *ngIf="p.mediaUrl"
+         [src]="'http://localhost:9090/' + p.mediaUrl"
+         class="rounded-lg w-full mb-4 border dark:border-[#3a3b3c] border-[#e4e6eb]" />
+
+    <!-- Likes + Comments Summary -->
+    <div class="text-xs dark:text-[#b0b3b8] mb-2 flex justify-between">
+      <span>{{ p.likeCount }} Likes</span>
+      <span>{{ p.commentCount }} Comments</span>
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="flex border-t border-b dark:border-[#3a3b3c] border-[#e4e6eb] py-2 text-sm dark:text-[#b0b3b8] text-black">
+      <button class="flex items-center justify-center w-1/2 gap-1 py-1 text-sm font-medium dark:text-[#b0b3b8] text-black  dark:hover:text-blue-400  hover:text-blue-700 transition">
+        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+          <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2
+             6.5 3.5 5 5.5 5c1.54 0 3.04.99
+             3.57 2.36h1.87C13.46 5.99
+             14.96 5 16.5 5 18.5 5
+             20 6.5 20 8.5c0 3.78-3.4
+             6.86-8.55 11.54L12 21.35z"/>
+        </svg>
+        <span>Like</span>
+      </button>
+
+
+      <button class="flex items-center justify-center w-1/2 py-1 text-sm font-medium hover:text-blue-700 text-black dark:text-[#b0b3b8] dark:hover:text-blue-400 transition">
+        <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M8 10h.01M12 10h.01M16 10h.01M21 12c0 4.418-4.03 8-9 8a9.77 9.77 0 01-4-.89l-4 1 1.09-3.635C3.426 15.265 3 13.674 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/>
+        </svg>
+        Comment
+      </button>
+    </div>
+
+    <!-- Comments -->
+    <div *ngFor="let comment of p.comments" class="mt-4 space-y-3 dark:text-[#e4e6eb] text-black">
+      <div class="flex items-start">
+        <img [src]="'http://localhost:9090' + comment.user.profileImage"
+             (error)="onImageError($event)"
+             class="w-8 h-8 rounded-full mr-2 border dark:border-[#3a3b3c] border-[#b0b3b8]"
+             alt="profile image" />
+        <div class="dark:bg-[#3a3b3c] p-2 rounded-xl max-w-sm bg-[#e4e6eb]">
+          <p class="font-semibold text-xs dark:text-white">{{ comment.user.name }}</p>
+          <p class="text-sm dark:text-white">{{ comment.content }}</p>
+          <p class="text-xs text-[#b0b3b8] mt-1">{{ comment.createdAt | date:'short' }}</p>
+        </div>
+      </div>
+
+      <!-- Replies -->
+      <div *ngFor="let reply of comment.replies" class="pl-8">
+        <div class="flex items-start">
+          <img [src]="'http://localhost:9090' + reply.user.profileImage"
+               (error)="onImageError($event)"
+               alt="profile image"
+               class="w-7 h-7 rounded-full mr-2 border dark:border-[#3a3b3c] border-[#b0b3b8]" />
+          <div class="dark:bg-[#3a3b3c] p-2 rounded-xl max-w-sm bg-[#e4e6eb]">
+            <p class="font-semibold text-xs dark:text-white">{{ reply.user.name }}</p>
+            <p class="text-sm dark:text-white">{{ reply.content }}</p>
+            <p class="text-xs text-[#b0b3b8] mt-1">{{ reply.createdAt | date:'short' }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Comment Input -->
+    <div class="mt-4 flex items-center border border-gray-300 dark:border-[#3a3b3c] rounded-full px-3 py-1 dark:bg-[#242526]">
+      <img [src]="'http://localhost:9090' "
+           (error)="onImageError($event)"
+           alt="profile"
+           class="w-8 h-8 rounded-full mr-2 border dark:border-[#3a3b3c] border-[#b0b3b8]" />
+      <input type="text"
+             class="flex-1 text-sm focus:outline-none dark:dark:bg-[#242526] dark:text-white dark:placeholder:text-[#b0b3b8]"
+             placeholder="Write a comment..." />
+    </div>
+  </div>
+</div>

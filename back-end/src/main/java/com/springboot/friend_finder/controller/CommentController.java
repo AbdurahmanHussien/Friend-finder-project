@@ -1,6 +1,7 @@
 package com.springboot.friend_finder.controller;
 
 import com.springboot.friend_finder.dto.CommentDto;
+import com.springboot.friend_finder.mapper.UserMapper;
 import com.springboot.friend_finder.service.ICommentService;
 import com.springboot.friend_finder.service.auth.CustomUserDetails;
 import lombok.RequiredArgsConstructor;
@@ -17,10 +18,11 @@ import java.util.List;
 public class CommentController {
 
     private final ICommentService commentService;
+    private final UserMapper userMapper;
 
     @PostMapping
     public ResponseEntity<CommentDto> createComment(@RequestBody CommentDto commentDto, @AuthenticationPrincipal CustomUserDetails userDetails) {
-        commentDto.setUserId(userDetails.getId());
+        commentDto.setUser(userMapper.userToUserPost(userDetails.getUser()));
         return new ResponseEntity<>(commentService.createComment(commentDto), HttpStatus.CREATED);
     }
 

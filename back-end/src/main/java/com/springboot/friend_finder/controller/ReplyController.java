@@ -1,6 +1,7 @@
 package com.springboot.friend_finder.controller;
 
 import com.springboot.friend_finder.dto.CommentsReplyDto;
+import com.springboot.friend_finder.mapper.UserMapper;
 import com.springboot.friend_finder.service.IReplyService;
 import com.springboot.friend_finder.service.auth.CustomUserDetails;
 import lombok.RequiredArgsConstructor;
@@ -17,17 +18,19 @@ import java.util.List;
 public class ReplyController {
 
     private final IReplyService replyService;
+    private final UserMapper userMapper;
+
 
     @PostMapping
     public ResponseEntity<CommentsReplyDto> createReply(@RequestBody CommentsReplyDto commentsReplyDto, @AuthenticationPrincipal CustomUserDetails userDetails) {
-        commentsReplyDto.setUserId(userDetails.getId());
+        commentsReplyDto.setUser(userMapper.userToUserPost(userDetails.getUser()));
         return new ResponseEntity<>(replyService.createReply(commentsReplyDto), HttpStatus.CREATED);
     }
 
     @PutMapping("/{replyId}")
     public ResponseEntity<CommentsReplyDto> updateReply(@RequestBody CommentsReplyDto commentsReplyDto, @PathVariable Long replyId, @AuthenticationPrincipal CustomUserDetails userDetails) {
         commentsReplyDto.setId(replyId);
-        commentsReplyDto.setUserId(userDetails.getId());
+        commentsReplyDto.setUser(userMapper.userToUserPost(userDetails.getUser()));
         return ResponseEntity.ok(replyService.updateReply(commentsReplyDto));
     }
 

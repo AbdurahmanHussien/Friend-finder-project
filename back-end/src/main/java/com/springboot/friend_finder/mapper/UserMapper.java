@@ -1,6 +1,7 @@
 package com.springboot.friend_finder.mapper;
 
 import com.springboot.friend_finder.dto.authDto.UserDto;
+import com.springboot.friend_finder.dto.authDto.UserPost;
 import com.springboot.friend_finder.entity.Comment;
 import com.springboot.friend_finder.entity.CommentsReply;
 import com.springboot.friend_finder.entity.Friendship;
@@ -27,6 +28,16 @@ public interface UserMapper {
 	@Mapping(target = "sentRequestsIds", source = "sentRequests")
 	@Mapping(target = "receivedRequestsIds", source = "receivedRequests")
 	UserDto toDto(User user);
+
+	@Mapping(source = "id", target = "id")
+	@Mapping(source = "userDetails.name", target = "name")
+	@Mapping(source = "userDetails.profileImage", target = "profileImage")
+	UserPost userToUserPost(User user);
+
+	@Mapping(source = "id", target = "id")
+	@Mapping(source = "userDetails.name", target = "name")
+	@Mapping(source = "userDetails.profileImage", target = "profileImage")
+	List<UserPost> userToUserPostList(List<User> users);
 
 	@Mapping(target = "userDetails", source = "userDetails")
 	@Mapping(target = "roles", ignore = true)

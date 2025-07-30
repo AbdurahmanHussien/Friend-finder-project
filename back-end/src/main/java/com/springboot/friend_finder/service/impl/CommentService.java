@@ -32,11 +32,17 @@ public class CommentService implements ICommentService {
     private final CommentLikeRepository commentLikeRepository;
 
     @Override
+    @Transactional
     public CommentDto createComment(CommentDto commentDto) {
 
         if(commentDto.getId()!=null) {
             throw new ResourceNotFoundException("id.notempty");
         }
+
+        Post post = postRepository.findById(commentDto.getPostId())
+                .orElseThrow(() -> new ResourceNotFoundException("post.not.found"));
+
+        post.setCommentCount(post.getCommentCount() == null ? 1 : post.getCommentCount() + 1);
 
         return saveComment(commentDto);
 
@@ -54,18 +60,21 @@ public class CommentService implements ICommentService {
 	}
 
 	@Override
+	@Transactional
 	public void deleteComment(Long commentId) {
 		Comment comment = commentRepository.findById(commentId)
 				.orElseThrow(() -> new ResourceNotFoundException("comment.not.found"));
-		
+
+		Post post = comment.getPost();
+		if (post != null) {
+			post.setCommentCount(post.getCommentCount() == null || post.getCommentCount() <= 0 ? 0 : post.getCommentCount() - 1);
+			post.getComments().remove(comment);
+		}
+
 		if (comment.getUser() != null) {
 			comment.getUser().getComments().remove(comment);
 		}
-		
-		if (comment.getPost() != null) {
-			comment.getPost().getComments().remove(comment);
-		}
-		
+
 		commentRepository.delete(comment);
 	}
 
@@ -115,7 +124,7 @@ public class CommentService implements ICommentService {
     public CommentDto saveComment(CommentDto commentDto) {
         Post post = postRepository.findById(commentDto.getPostId())
                 .orElseThrow(() -> new ResourceNotFoundException("post.not.found"));
-        User user = userRepository.findById(commentDto.getUserId())
+        User user = userRepository.findById(commentDto.getUser().getId())
                 .orElseThrow(() -> new ResourceNotFoundException("user.not.found"));
                 
         Comment comment = commentMapper.toEntity(commentDto);

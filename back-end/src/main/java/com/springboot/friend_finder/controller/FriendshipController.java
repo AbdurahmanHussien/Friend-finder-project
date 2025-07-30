@@ -2,6 +2,7 @@ package com.springboot.friend_finder.controller;
 
 import com.springboot.friend_finder.dto.FriendshipDto;
 import com.springboot.friend_finder.dto.authDto.UserDto;
+import com.springboot.friend_finder.dto.authDto.UserPost;
 import com.springboot.friend_finder.service.auth.CustomUserDetails;
 import com.springboot.friend_finder.service.impl.FriendService;
 import lombok.RequiredArgsConstructor;
@@ -66,8 +67,8 @@ public class FriendshipController {
 	}
 
 	@GetMapping("/suggestions")
-	public ResponseEntity<List<UserDto>> getSuggestions(@AuthenticationPrincipal CustomUserDetails user) {
-		List<UserDto> result = friendService.getSuggestions(user.getId());
+	public ResponseEntity<List<UserPost>> getSuggestions(@AuthenticationPrincipal CustomUserDetails user) {
+		List<UserPost> result = friendService.getSuggestions(user.getId());
 		return ResponseEntity.ok(result);
 	}
 }

@@ -73,7 +73,7 @@ public class ReplyService implements IReplyService {
     private CommentsReplyDto saveReply(CommentsReplyDto commentsReplyDto) {
         Comment comment = commentRepository.findById(commentsReplyDto.getCommentId())
                 .orElseThrow(() -> new ResourceNotFoundException("comment.not.found"));
-        User user = userRepository.findById(commentsReplyDto.getUserId())
+        User user = userRepository.findById(commentsReplyDto.getUser().getId())
                 .orElseThrow(() -> new ResourceNotFoundException("user.not.found"));
 
         CommentsReply reply = replyMapper.toEntity(commentsReplyDto);

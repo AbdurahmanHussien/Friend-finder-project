@@ -1,9 +1,11 @@
 package com.springboot.friend_finder.service.impl;
 
 import com.springboot.friend_finder.dto.UserProfileDto;
+import com.springboot.friend_finder.dto.authDto.UserPost;
 import com.springboot.friend_finder.entity.auth.User;
 import com.springboot.friend_finder.entity.auth.UserDetails;
 import com.springboot.friend_finder.exceptions.ResourceNotFoundException;
+import com.springboot.friend_finder.mapper.UserMapper;
 import com.springboot.friend_finder.mapper.UserProfileMapper;
 import com.springboot.friend_finder.repository.auth.UserRepository;
 import com.springboot.friend_finder.service.IUserProfileService;
@@ -23,6 +25,7 @@ import java.util.UUID;
 public class UserProfileService implements IUserProfileService {
 
     private final UserRepository userRepository;
+    private final UserMapper userMapper;
     private final UserProfileMapper userProfileMapper;
 
     @Value("${file.avatar-dir}")
@@ -78,5 +81,10 @@ public class UserProfileService implements IUserProfileService {
 
         User updatedUser = userRepository.save(user);
         return userProfileMapper.toDto(updatedUser);
+    }
+
+    @Override
+    public UserPost getMyProfile(Long userId) {
+        return userMapper.userToUserPost(userRepository.findById(userId).orElseThrow(() -> new ResourceNotFoundException("user.not.found")));
     }
 }

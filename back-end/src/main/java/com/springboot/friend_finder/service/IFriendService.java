@@ -2,6 +2,7 @@ package com.springboot.friend_finder.service;
 
 import com.springboot.friend_finder.dto.FriendshipDto;
 import com.springboot.friend_finder.dto.authDto.UserDto;
+import com.springboot.friend_finder.dto.authDto.UserPost;
 
 import java.util.List;
 
@@ -21,7 +22,7 @@ public interface IFriendService {
 
 	void deleteRequest(Long senderId, Long receiverId);
 
-	List<UserDto> getSuggestions(Long userId);
+	List<UserPost> getSuggestions(Long userId);
 
 
 }

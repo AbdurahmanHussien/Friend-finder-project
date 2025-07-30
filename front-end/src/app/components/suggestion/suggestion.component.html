@@ -1,0 +1,18 @@
+<div class="bg-white rounded-xl shadow p-4 dark:bg-[#242526]">
+  <h2 class="text-lg font-semibold mb-4 dark:text-[#e4e6eb]">Suggestions</h2>
+
+  <div *ngFor="let user of users" class="flex items-center justify-between mb-3">
+    <div class="flex items-center gap-3 mr-3">
+      <img [src]="user.profileImage"
+           (error)="onImageError($event)"
+           alt="profile image"
+           class="w-10 h-10 rounded-full object-cover" />
+      <span class="font-medium dark:text-[#e4e6eb]">{{ user.name }}</span>
+    </div>
+
+    <button (click)="addFriend(user.id)"
+            class="bg-blue-600 hover:bg-blue-700 text-white text-sm px-3 py-1 rounded-md">
+      Add Friend
+    </button>
+  </div>
+</div>

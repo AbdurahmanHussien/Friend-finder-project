@@ -3,11 +3,13 @@ package com.springboot.friend_finder.service.auth;
 
 import com.springboot.friend_finder.config.jwt.JwtUtils;
 import com.springboot.friend_finder.constant.RoleType;
+import com.springboot.friend_finder.dto.authDto.UserPost;
 import com.springboot.friend_finder.entity.auth.Role;
 import com.springboot.friend_finder.entity.auth.User;
 import com.springboot.friend_finder.entity.auth.UserDetails;
 import com.springboot.friend_finder.exceptions.DuplicateFieldException;
 import com.springboot.friend_finder.exceptions.ResourceNotFoundException;
+import com.springboot.friend_finder.mapper.UserMapper;
 import com.springboot.friend_finder.repository.auth.RoleRepository;
 import com.springboot.friend_finder.repository.auth.UserRepository;
 import com.springboot.friend_finder.request.LoginRequest;
@@ -38,6 +40,7 @@ public class AuthenticationService implements IAuthenticationService {
         private final PasswordEncoder passwordEncoder;
         private final AuthenticationManager authenticationManager;
         private final CustomUserDetailsService customUserDetailsService;
+        private final UserMapper userMapper;
 
 
 
@@ -91,9 +94,10 @@ public class AuthenticationService implements IAuthenticationService {
         String refreshToken = jwtUtils.generateToken(user, 7 * 24 * 60 * 60 * 1000);
 
 
+        UserPost userProf = userMapper.userToUserPost(savedUser);
 
         return AuthResponse.builder()
-                .userId(savedUser.getId())
+                .user(userProf)
                 .token(accessToken)
                 .refreshToken(refreshToken)
                 .build();
@@ -117,8 +121,10 @@ public class AuthenticationService implements IAuthenticationService {
         String accessToken = jwtUtils.generateToken(user,  7* 30 * 60 * 1000);  // until testing                          // 30 minutes
         String refreshToken = jwtUtils.generateToken(user, 7 * 24 * 60 * 60 * 1000);
 
+        UserPost userProf = userMapper.userToUserPost(user);
+
         return AuthResponse.builder()
-                    .userId(user.getId())
+                    .user(userProf)
                     .token(accessToken)
                     .refreshToken(refreshToken)
                     .build();
