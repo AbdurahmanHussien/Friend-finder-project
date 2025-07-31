@@ -2,16 +2,16 @@
   <h2 class="text-lg font-semibold mb-4 dark:text-[#e4e6eb]">Suggestions</h2>
 
   <div *ngFor="let user of users" class="flex items-center justify-between mb-3">
-    <div class="flex items-center gap-3 mr-3">
-      <img [src]="user.profileImage"
+    <div class="flex items-center gap-3 overflow-hidden">
+      <img [src]="'http://localhost:9090'+user.profileImage"
            (error)="onImageError($event)"
            alt="profile image"
-           class="w-10 h-10 rounded-full object-cover" />
-      <span class="font-medium dark:text-[#e4e6eb]">{{ user.name }}</span>
+           class="w-10 h-10 rounded-full object-cover flex-shrink-0" />
+      <span class="font-medium dark:text-[#e4e6eb] truncate max-w-[120px]">{{ user.name }}</span>
     </div>
 
     <button (click)="addFriend(user.id)"
-            class="bg-blue-600 hover:bg-blue-700 text-white text-sm px-3 py-1 rounded-md">
+            class="bg-blue-600 hover:bg-blue-700 text-white text-sm px-3 py-1 rounded-md shrink-0">
       Add Friend
     </button>
   </div>

@@ -41,4 +41,6 @@ public class PostDto {
 
 	private UserPost user;
 
+	private boolean likedByCurrentUser;
+
 }

@@ -7,19 +7,19 @@ import org.mapstruct.Mapping;
 
 import java.util.List;
 
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", uses = {UserMapper.class})
 public interface FriendshipMapper {
 
 
-	@Mapping(target = "sender.id", source = "senderId")
+	@Mapping(target = "sender", source = "sender")
 	@Mapping(target = "receiver.id", source = "receiverId")
 	Friendship toEntity(FriendshipDto friendshipDto);
 
-	@Mapping(target = "senderId", source = "sender.id")
+	@Mapping(target = "sender", source = "sender")
 	@Mapping(target = "receiverId", source = "receiver.id")
 	FriendshipDto toDto(Friendship friendship);
 
-	@Mapping(target = "senderId", source = "sender.id")
+	@Mapping(target = "sender", source = "sender")
 	@Mapping(target = "receiverId", source = "receiver.id")
 	List<FriendshipDto> toDtoList(List<Friendship> friendships);
 

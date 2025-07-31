@@ -1,12 +1,16 @@
 import {Reply} from './Reply';
 import {User} from './User';
 
-export interface Comment {
-  id?: number;
+export interface CommentDto {
+  id: number;
   createdAt: Date;
   content: string;
-  likeCount: number;
+  likeCount?: number;
   postId?: number;
   user: User;
+  likedByCurrentUser:boolean
   replies?: Reply[];
+
+  replying?: boolean;
+  replyContent?: string;
 }

@@ -24,6 +24,5 @@ export const appConfig: ApplicationConfig = {
       timeOut: 5000,
       preventDuplicates: true,
     }),
-
   ]
 };

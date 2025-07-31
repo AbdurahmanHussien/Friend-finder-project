@@ -24,5 +24,6 @@ public interface IFriendService {
 
 	List<UserPost> getSuggestions(Long userId);
 
+    int getFriendCount(Long userId);
 
 }

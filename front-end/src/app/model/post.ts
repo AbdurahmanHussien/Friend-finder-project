@@ -1,4 +1,4 @@
-import {Comment} from './Comment';
+import {CommentDto} from './CommentDto';
 import {User} from './User';
 export interface Post {
   id: number;
@@ -9,7 +9,8 @@ export interface Post {
   updatedAt?: Date;
   mediaUrl?: string;
   mediaType?: string;
+  likedByCurrentUser: boolean;
   user: User;
-  comments?: Comment[];
+  comments: CommentDto[];
 
 }

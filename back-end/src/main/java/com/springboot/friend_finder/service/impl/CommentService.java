@@ -108,7 +108,10 @@ public class CommentService implements ICommentService {
 		commentRepository.save(comment);
 	}
 	@Override
-    public List<CommentDto> getCommentsByPost(Long postId) {
+    public List<CommentDto> getCommentsByPost(Long postId, Long userId) {
+        User user = userRepository.findById(userId)
+                .orElseThrow(() -> new ResourceNotFoundException("user.not.found"));
+
         if (!postRepository.existsById(postId)) {
             throw new ResourceNotFoundException("post.not.found");
         }
@@ -116,7 +119,12 @@ public class CommentService implements ICommentService {
         List<Comment> comments = commentRepository.findByPostIdOrderByCreatedAtDesc(postId);
         
         return comments.stream()
-                .map(commentMapper::toDto)
+                .map(comment -> {
+                    CommentDto dto = commentMapper.toDto(comment);
+                    boolean isLiked = commentLikeRepository.existsByUserAndComment(user, comment);
+                    dto.setLikedByCurrentUser(isLiked);
+                    return dto;
+                })
                 .collect(Collectors.toList());
     }
 

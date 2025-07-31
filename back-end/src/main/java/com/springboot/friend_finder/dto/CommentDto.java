@@ -29,11 +29,10 @@ public class CommentDto {
 
 	private Long postId;
 
-
 	private UserPost user;
+
+	private boolean likedByCurrentUser;
 
 	@JsonProperty(access = JsonProperty.Access.READ_ONLY)
 	private List<CommentsReplyDto> replies;
 }
-
-

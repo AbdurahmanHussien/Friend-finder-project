@@ -38,6 +38,7 @@ export class SignupComponent {
       password: [''],
       gender: ['']
     });
+
     this.form.get('email')?.valueChanges.subscribe(value => {
       if (value) {
         const clean = value.trim().toLowerCase();
@@ -49,7 +50,6 @@ export class SignupComponent {
   }
 
   showPassword = false
-  UserRole: any  ;
 
 
   signupErrors : any = {}
@@ -70,13 +70,11 @@ export class SignupComponent {
     this.authService.signup(payload).subscribe({
       next: (res) => {
         const token = res.token;
-        const userId = res.userId;
+        const refreshToken = res.refreshToken;
         localStorage.setItem('jwt_token', token);
-        this.UserRole = res.userRole;
-        localStorage.setItem('userId', userId);
-
-        console.log( this.UserRole)
-        this.toastr.success('You have been signed up in successfully', 'Welcome')
+        localStorage.setItem('refresh_token', refreshToken);
+        localStorage.setItem("user", JSON.stringify(res.user));
+        this.toastr.success('You have been logged in successfully', 'Welcome')
         this.router.navigate(['/'])
       },
       error: (err) => {

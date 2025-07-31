@@ -21,6 +21,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -29,6 +30,7 @@ public class PostService implements IPostService {
 	private final PostRepository postRepository;
 	private final UserRepository userRepository;
 	private final PostMapper postMapper;
+	private final PostLikeRepository likeService;
 
 	private final PostLikeRepository postLikeRepository;
 
@@ -138,12 +140,27 @@ public class PostService implements IPostService {
 		if (!userRepository.existsById(userId)) {
 			throw new ResourceNotFoundException("user.not.found");
 		}
+
+		User user = userRepository.findById(userId)
+				.orElseThrow(() -> new ResourceNotFoundException("user.not.found"));
+
 		List<Post> posts = postRepository.findTimelinePosts(userId);
+
 		if (posts.isEmpty()) {
 			throw new ResourceNotFoundException("timeline.is.empty");
 		}
-		return postMapper.toDtoList(postRepository.findTimelinePosts(userId));
+		List<PostDto> dtos = posts.stream()
+				.map(post -> {
+					boolean isLiked = likeService.existsByUserAndPost(user, post);
+					PostDto dto = postMapper.toDto(post);
+					dto.setLikedByCurrentUser(isLiked);
+					return dto;
+				})
+				.collect(Collectors.toList());
+
+		return dtos;
 	}
+
 
 	@Override
 	@Transactional
@@ -173,6 +190,12 @@ public class PostService implements IPostService {
 		}
 		
 		postRepository.save(post);
+	}
+
+	public PostDto getPostById(Long postId) {
+		Post post = postRepository.findById(postId)
+				.orElseThrow(() -> new ResourceNotFoundException("post.not.found"));
+		return postMapper.toDto(post);
 	}
 
     // ========================helper methods ========================

@@ -5,7 +5,7 @@ export interface Reply {
   content: string;
   createdAt: Date;
   updatedAt?: Date;
-  commentId?: number;
+  commentId: number;
   user: User;
 
 }

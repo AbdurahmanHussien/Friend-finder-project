@@ -28,6 +28,7 @@
               }
             ],
             "styles": [
+              "node_modules/plyr/dist/plyr.css",
               "src/styles.css"
             ],
             "scripts": []

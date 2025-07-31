@@ -1,22 +1,37 @@
 <div class="bg-white dark:bg-[#242526] rounded-xl shadow p-4 min-h-screen flex flex-col mb-20">
   <!-- Profile Card -->
   <div class="bg-gradient-to-r from-blue-500 to-blue-700 rounded-lg text-white p-4 mb-6 text-center">
-    <img  [src]="imageUrl"
-         alt="user"
-         class="w-16 h-16 rounded-full mx-auto mb-2 border-4 border-white object-cover" />
-    <h5 class="font-semibold">{{name}}</h5>
-    <p class="text-sm text-white/90"><i class="ion ion-android-person-add"></i> 1,299 followers</p>
+    <label>
+      <img
+        [src]="imageUrl"
+        (error)="onImageError($event)"
+        alt="profile image"
+        class="w-16 h-16 rounded-full mx-auto mb-2 border-4 border-white object-cover cursor-pointer"
+        (click)="triggerFileInput()" />
+      <input
+        #fileInput
+        type="file"
+        accept="image/*"
+        class="hidden"
+        (change)="onFileSelected($event)" />
+    </label>
+
+    <h5 class="font-semibold">{{ name }}</h5>
+    <p class="text-sm text-white/90">
+      <i class="ion ion-android-person-add"></i>{{ friendsNumber }} Friends
+    </p>
   </div>
+
 
   <!-- Menu Links -->
   <ul class="space-y-4 text-sm text-gray-800 dark:text-[#e4e6eb]">
     <li class="flex items-center gap-3 hover:text-blue-600 cursor-pointer">
       <i class="icon ion-ios-paper text-xl text-green-600"></i>
-      <span>My Newsfeed</span>
-    </li>
-    <li class="flex items-center gap-3 hover:text-blue-600 cursor-pointer">
-      <i class="icon ion-ios-people text-xl text-purple-600"></i>
-      <span>People Nearby</span>
+
+      <a routerLink="/timeline"
+         routerLinkActive="!text-blue-700 dark:!text-blue-400"
+         [routerLinkActiveOptions]="{ exact: true }"
+      >My Newsfeed</a>
     </li>
     <li class="flex items-center gap-3 hover:text-blue-600 cursor-pointer">
       <i class="icon ion-ios-people-outline text-xl text-orange-500"></i>

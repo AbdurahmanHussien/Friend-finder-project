@@ -3,7 +3,7 @@ import {AuthGuard} from './service/AuthGuard';
 
 export const routes: Routes = [
   {
-    path: '', canActivate : [AuthGuard],
+    path: 'timeline', canActivate : [AuthGuard],
     loadComponent: () => import('./components/home/home.component').then(m => m.HomeComponent)
   },
   {
@@ -13,9 +13,11 @@ export const routes: Routes = [
   {
     path: 'signup',
     loadComponent: () => import('./components/signup/signup.component').then(m => m.SignupComponent)
+  },
+  {
+    path: '**',
+    redirectTo: 'timeline'
   }
-
-
 
 ];
 

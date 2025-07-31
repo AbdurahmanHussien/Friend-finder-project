@@ -1,5 +1,5 @@
 {
-  "name": "untitled",
+  "name": "friend-finder",
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
@@ -7,7 +7,7 @@
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "serve:ssr:untitled": "node dist/untitled/server/server.mjs"
+    "serve:ssr:friend-finder": "node dist/friend-finder/server/server.mjs"
   },
   "private": true,
   "dependencies": {
@@ -22,7 +22,9 @@
     "@angular/router": "^19.2.0",
     "@angular/ssr": "^19.2.15",
     "express": "^4.18.2",
+    "ngx-plyr": "^4.0.1",
     "ngx-toastr": "^19.0.0",
+    "plyr": "^3.7.8",
     "rxjs": "~7.8.0",
     "tailwind-scrollbar-hide": "^4.0.0",
     "tslib": "^2.3.0",

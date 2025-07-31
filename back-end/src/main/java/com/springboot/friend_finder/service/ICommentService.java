@@ -14,6 +14,8 @@ public interface ICommentService {
 
 	void likeAndUnlikeComment(Long commentId, Long userId);
 
-	List<CommentDto> getCommentsByPost(Long postId);
+	List<CommentDto> getCommentsByPost(Long postId, Long userId);
+
+	CommentDto saveComment(CommentDto commentDto);
 
 }

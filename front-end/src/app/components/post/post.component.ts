@@ -1,93 +1,168 @@
-import {Component, EventEmitter, OnInit, Output} from '@angular/core';
-import {NgIf} from '@angular/common';
-import {FormsModule} from '@angular/forms';
-import {TimelineService} from '../../service/timeline.service';
-import {ToastrService} from 'ngx-toastr';
-import {AuthService} from '../../service/auth.service';
+import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
+import { Post } from '../../model/post';
+import { NgForOf, NgIf } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { TimeagoPipe } from '../../service/timeago.pipe';
+import { TimelineService } from '../../service/timeline.service';
+import {CommentDto} from '../../model/CommentDto';
+import {Reply} from '../../model/Reply';
 
 @Component({
   selector: 'app-post',
   imports: [
+    FormsModule,
+    NgForOf,
     NgIf,
-    FormsModule
+    TimeagoPipe
   ],
   templateUrl: './post.component.html',
-  styleUrls: ['./post.component.css']
+  styleUrls: ['./post.component.css'],
+  standalone: true
 })
 export class PostComponent implements OnInit {
+  @Input() post!: Post;
 
-  user = JSON.parse(localStorage.getItem("user")!);
-  imageUrl = `http://localhost:9090${this.user.profileImage}`;
 
-  constructor(private timelineService: TimelineService, private toastr: ToastrService, private authService: AuthService) { }
+  user: any;
+  imageUrl!: string;
+
+  replyTexts: { [commentId: number]: string } = {};
+
+  comment!: CommentDto;
+
+  reply!: Reply;
+
+  showAllComments: { [postId: number]: boolean } = {};
+  expandedReplies: { [commentId: number]: boolean } = {};
+
+  toggleComments(postId: number) {
+    this.showAllComments[postId] = true;
+  }
+
+  toggleReplies(commentId: number) {
+    this.expandedReplies[commentId] = true;
+  }
+
+  shouldShowReply(commentId: number, index: number): boolean {
+    return this.expandedReplies[commentId] || index < 2;
+  }
+
+  constructor(private timelineService: TimelineService) {}
 
   ngOnInit(): void {
-    this.authService.currentUser$.subscribe(u => this.user = u);
+    this.user = JSON.parse(localStorage.getItem("user")!);
+    this.imageUrl = `http://localhost:9090${this.user.profileImage}`;
+    this.comment = {
+      likedByCurrentUser: false,
+      id: 0,
+      content: '',
+      createdAt: new Date(),
+      user: this.user,
+      likeCount: 0,
+      replies: []
+    };
+    this.reply = {
+      content: '',
+      user: this.user,
+      createdAt: new Date(),
+      commentId: 0
+    };
+    this.getCommentsByPostId(this.post.id);
+  }
+
+  onToggleLike(post: Post) {
+    if (post.likedByCurrentUser) {
+      post.likeCount--;
+    } else {
+      post.likeCount++;
+    }
+
+    post.likedByCurrentUser = !post.likedByCurrentUser;
+
+    this.timelineService.toggleLike(post).subscribe(updatedPost => {
+      post.likeCount = updatedPost.likeCount;
+
+  });
   }
 
 
-  text = '';
-  selectedFile: File | null = null;
-  previewUrl: string | null = null;
-  isImage = false;
-  isVideo = false;
-  submitting = false;
+  likeComment(comment: CommentDto) {
 
-  @Output() postCreated = new EventEmitter<void>();
-
-  onFileSelected(event: Event) {
-    const file = (event.target as HTMLInputElement).files?.[0];
-    if (file) {
-      this.selectedFile = file;
-
-      const fileType = file.type;
-      this.isImage = fileType.startsWith('image');
-      this.isVideo = fileType.startsWith('video');
-
-      const reader = new FileReader();
-      reader.onload = () => {
-        this.previewUrl = reader.result as string;
-      };
-      reader.readAsDataURL(file);
-    }
-  }
-
-  submitPost() {
-    if (!this.text.trim() && !this.selectedFile) {
-      console.error('Post content is empty.');
-      return;
+    comment.likedByCurrentUser = !comment.likedByCurrentUser;
+    if (comment.likedByCurrentUser) {
+      // @ts-ignore
+      comment.likeCount++;
+    } else {
+      // @ts-ignore
+      comment.likeCount--;
     }
 
-    this.submitting = true;
-
-    this.timelineService.createPost(this.text, this.selectedFile!).subscribe({
-      next: (response) => {
-        this.toastr.success('Post submitted successfully', 'Success');
-        console.log('Post submitted successfully', response);
-        this.resetForm();
-        this.postCreated.emit();
-      },
-      error: (error) => {
-        this.toastr.error('Error submitting post', 'Error');
-        console.error('Error submitting post', error);
-      },
-      complete: () => {
-        this.submitting = false;
-      }
+    this.timelineService.commentLike(comment.id).subscribe(updatedComment => {
+      comment.likedByCurrentUser = updatedComment.likedByCurrentUser;
+      comment.likeCount = updatedComment.likesCount;
     });
   }
 
-
-  resetForm() {
-    this.text = '';
-    this.selectedFile = null;
-    this.previewUrl = null;
-    this.isImage = false;
-    this.isVideo = false;
+  onImageError(event: Event | ErrorEvent) {
+    const imgElement = event.target as HTMLImageElement;
+    if (imgElement) {
+      imgElement.src = 'assets/images/unknown.png';
+    }
   }
 
-  onImageError(event: Event) {
-    (event.target as HTMLImageElement).src = 'assets/images/unknown.png';
+  addComment() {
+    // @ts-ignore
+    const newComment: CommentDto = {
+      content: this.comment.content,
+      postId: this.post?.id!,
+      user: this.user,
+      createdAt: new Date(),
+    };
+
+    this.timelineService.addComment(newComment).subscribe((comment) => {
+      // @ts-ignore
+      this.post?.comments.push(comment);
+      this.post.commentCount++;
+      this.comment.content = '';
+    });
+  }
+
+  addReply(commentId: number) {
+    const replyContent = this.replyTexts[commentId];
+    if (!replyContent || replyContent.trim() === '') return;
+
+    const newReply: Reply = {
+      content: replyContent,
+      user: this.user,
+      createdAt: new Date(),
+      commentId: commentId
+    };
+
+    this.timelineService.addReply(newReply).subscribe((reply) => {
+      // @ts-ignore
+      const targetComment = this.post.comments.find(c => c.id === commentId);
+      if (targetComment?.replies) {
+        targetComment.replies.push(reply);
+      } else if (targetComment) {
+        targetComment.replies = [reply];
+      }
+
+      this.replyTexts[commentId] = '';
+    });
+  }
+
+  getCommentsByPostId(postId:number){
+    this.timelineService.getCommentsByPostId(postId).subscribe(comments => {
+      this.post.comments = comments;
+    });
+  }
+
+  isImage(url: string): boolean {
+    return /\.(jpg|jpeg|png|gif|webp)$/i.test(url);
+  }
+
+  isVideo(url: string): boolean {
+    return /\.(mp4|mov|ogg)$/i.test(url);
   }
 
 }

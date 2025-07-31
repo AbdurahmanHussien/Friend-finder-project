@@ -1,6 +1,7 @@
 package com.springboot.friend_finder.dto;
 
 import com.springboot.friend_finder.constant.RequestStatus;
+import com.springboot.friend_finder.dto.authDto.UserPost;
 import lombok.Data;
 
 import java.time.LocalDateTime;
@@ -10,7 +11,7 @@ public class FriendshipDto {
 
 	private Long id;
 
-	private Long senderId;
+	private UserPost sender;
 
 	private Long receiverId;
 

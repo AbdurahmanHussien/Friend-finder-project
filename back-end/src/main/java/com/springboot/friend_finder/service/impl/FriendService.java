@@ -154,4 +154,9 @@ public class FriendService implements IFriendService {
 		return userMapper.userToUserPostList(users);
 	}
 
+
+    @Override
+    public int getFriendCount(Long userId) {
+        return friendshipRepository.countFriendsOfUser(userId);
+    }
 }

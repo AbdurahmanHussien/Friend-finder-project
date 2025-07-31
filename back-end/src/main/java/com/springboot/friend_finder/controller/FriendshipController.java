@@ -71,4 +71,10 @@ public class FriendshipController {
 		List<UserPost> result = friendService.getSuggestions(user.getId());
 		return ResponseEntity.ok(result);
 	}
+
+	@GetMapping("/count")
+	public ResponseEntity<Integer> getFriendCount(@AuthenticationPrincipal CustomUserDetails user) {
+		int count = friendService.getFriendCount(user.getId());
+		return ResponseEntity.ok(count);
+	}
 }

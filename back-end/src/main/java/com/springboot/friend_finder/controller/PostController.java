@@ -69,5 +69,9 @@ public class PostController {
 		return ResponseEntity.ok("done");
 	}
 
+	@GetMapping("/{postId}")
+	public ResponseEntity<PostDto> getPostById(@PathVariable Long postId) {
+		return ResponseEntity.ok(postService.getPostById(postId));
+	}
 }
 

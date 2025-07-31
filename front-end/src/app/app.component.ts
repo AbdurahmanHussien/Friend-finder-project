@@ -5,6 +5,7 @@ import {NgClass, NgIf} from '@angular/common';
 import {FooterComponent} from './components/footer/footer.component';
 import {HeaderComponent} from './components/header/header.component';
 import {SidebarComponent} from './components/sidebar/sidebar.component';
+import {AuthService} from './service/auth.service';
 
 @Component({
   selector: 'app-root',
@@ -25,7 +26,7 @@ export class AppComponent {
   isLoginPage = false;
   isDark = false;
 
-  constructor(private router: Router) {
+  constructor(private router: Router, private authService: AuthService) {
     this.router.events.subscribe(() => {
       this.isLoginPage = this.router.url === '/login' || this.router.url === '/signup' || this.router.url === '/login?loggedOut=true';
     });
@@ -42,4 +43,5 @@ export class AppComponent {
     this.isDark = document.documentElement.classList.toggle('dark');
     localStorage.setItem('theme', this.isDark ? 'dark' : 'light');
   }
+
 }

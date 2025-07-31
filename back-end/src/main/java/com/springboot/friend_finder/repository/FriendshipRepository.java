@@ -53,4 +53,11 @@ public interface FriendshipRepository extends JpaRepository<Friendship, Long> {
     )
 """)
 	List<User> findSuggestedUsers(@Param("userId") Long userId, Pageable pageable);
+
+    @Query("""
+    SELECT COUNT(fr) FROM Friendship fr 
+    WHERE (fr.sender.id = :userId OR fr.receiver.id = :userId) 
+    AND fr.status = 'ACCEPTED'
+    """)
+    int countFriendsOfUser(@Param("userId") Long userId);
 }
