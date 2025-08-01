@@ -1,4 +1,4 @@
-````markdown
+
 # Friend Finder - Full Stack Application
 
 Friend Finder is a full-stack social media application built with **Angular (frontend)** and **Spring Boot (backend)**.  
@@ -114,7 +114,3 @@ docker-compose up --build
 
 This project is open-source and free to use under MIT license.
 
-```
-
-تحب أعملك كمان ملف `docker-compose.yml` و `.env` متوافق مع الـ README؟
-```
