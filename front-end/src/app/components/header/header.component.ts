@@ -1,53 +1,112 @@
-import {Component, OnInit} from '@angular/core';
-import {Router, RouterLink, RouterLinkActive} from '@angular/router';
-import {NgClass, NgForOf, NgIf} from '@angular/common';
-import {HeaderService} from '../../service/header.service';
-import {Friendship} from '../../model/Friendsip';
+import { Component, OnInit, computed, effect, inject, signal } from '@angular/core';
+import { Router, RouterLink, RouterLinkActive } from '@angular/router';
+import { HeaderService } from '../../service/header.service';
+import { NotificationService } from '../../service/notification.service';
+import { Friendship } from '../../model/Friendsip';
+import { NgIf} from '@angular/common';
+import { ToastrService } from 'ngx-toastr';
+import {AuthService} from '../../service/auth.service';
+import {FriendRequestNotification} from '../../model/FriendRequestNotification';
 
 @Component({
   selector: 'app-header',
-  imports: [
-    RouterLink,
-    NgForOf,
-    NgIf,
-    RouterLinkActive,
-    NgClass
-  ],
   templateUrl: './header.component.html',
-  styleUrl: './header.component.css'
+  styleUrls: ['./header.component.css'],
+  imports: [
+    RouterLinkActive,
+    RouterLink,
+    NgIf,
+  ],
+  standalone: true
 })
 export class HeaderComponent implements OnInit {
 
-  constructor(private headerService: HeaderService, private router: Router) {
+  // --- Injections ---
+  private headerService = inject(HeaderService);
+  private notificationService = inject(NotificationService);
+  private authService = inject(AuthService);
+  private router = inject(Router);
+  private toastr = inject(ToastrService);
 
+
+  friendsRequest= signal<Friendship[]>([]);
+  requestsMenuOpen = signal(false);
+
+
+  friendRequestCount = computed(() => this.friendsRequest().length);
+
+  notifications = this.notificationService.notifications;
+
+  private notificationSound = new Audio('assets/sound/notif.wav');
+
+  constructor() {
+
+
+    effect(() => {
+      const allNotifications = this.notifications();
+      if (allNotifications.length > 0) {
+        const latestNotification = allNotifications[allNotifications.length - 1];
+
+        this.showNotificationToast(latestNotification);
+
+        this.friendsRequest.update(currentFriends =>
+          [...currentFriends, latestNotification.friendship]
+        );
+
+     this.notificationService.clearNotification(latestNotification.friendship.id);
+      }
+    });
   }
-  friends: Friendship[] = [];
 
-  requestsMenuOpen = false;
+  ngOnInit(): void {
+    this.loadFriendRequests();
+    this.notificationSound.load();
+  }
+
+
+  private showNotificationToast(notification: FriendRequestNotification) {
+    this.notificationSound.play().catch(err => console.error("Error playing sound:", err));
+
+    this.toastr.info(notification.message, 'Friend Request', {
+      timeOut: 5000,
+      positionClass: 'toast-bottom-right',
+      progressBar: true,
+      closeButton: true,
+    });
+  }
 
   toggleRequestsMenu() {
-    this.requestsMenuOpen = !this.requestsMenuOpen;
-  }
-  ngOnInit() {
-    this.loadFriendRequests();
+    this.requestsMenuOpen.update(open => !open);
   }
 
   loadFriendRequests() {
     this.headerService.getPendingRequestsForUser().subscribe({
-      next: (res) => this.friends = res,
-      error: (err) => console.error(err)
+      next: res => this.friendsRequest.set(res),
+      error: err => console.error("Failed to load friend requests:", err)
     });
   }
 
   acceptRequest(requestId: number) {
     this.headerService.acceptRequest(requestId).subscribe(() => {
-      this.loadFriendRequests();
+      this.friendsRequest.update(friends => friends.filter(f => f.id !== requestId));
+      this.toastr.success('Friend request accepted!', 'Friend Request', {
+        timeOut: 5000,
+        positionClass: 'toast-bottom-right',
+        progressBar: true,
+        closeButton: true
+      });
     });
   }
 
   rejectRequest(requestId: number) {
     this.headerService.rejectRequest(requestId).subscribe(() => {
-      this.loadFriendRequests();
+      this.friendsRequest.update(friends => friends.filter(f => f.id !== requestId));
+      this.toastr.error('you rejected the friend request' , 'Friend Request',{
+        timeOut: 5000,
+        positionClass: 'toast-bottom-right',
+        progressBar: true,
+        closeButton: true
+      })
     });
   }
 
@@ -56,14 +115,7 @@ export class HeaderComponent implements OnInit {
   }
 
   logout() {
-    localStorage.removeItem('jwt_token');
-    localStorage.removeItem('refresh_token');
-    localStorage.removeItem('user');
-    localStorage.removeItem('theme')
-
-    this.router.navigate(['/login'],
-      {
-        queryParams: { loggedOut: 'true' }
-      });
+    this.authService.logout();
   }
+
 }

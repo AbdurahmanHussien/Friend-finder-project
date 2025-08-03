@@ -1,12 +1,14 @@
 import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {SidebarService} from '../../service/sidebar.service';
 import {RouterLink, RouterLinkActive} from '@angular/router';
+import {NgOptimizedImage} from '@angular/common';
 
 @Component({
   selector: 'app-sidebar',
   imports: [
     RouterLink,
-    RouterLinkActive
+    RouterLinkActive,
+    NgOptimizedImage
   ],
   templateUrl: './sidebar.component.html',
   styleUrl: './sidebar.component.css'

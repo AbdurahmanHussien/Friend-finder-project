@@ -22,6 +22,15 @@
     "enableI18nLegacyMessageIdFormat": false,
     "strictInjectionParameters": true,
     "strictInputAccessModifiers": true,
-    "strictTemplates": true
+    "strictTemplates": true,
+    "paths": {
+      "crypto": ["./node_modules/crypto-browserify"],
+      "stream": ["./node_modules/stream-browserify"],
+      "assert": ["./node_modules/assert"],
+      "buffer": ["./node_modules/buffer"],
+      "util": ["./node_modules/util"],
+      "process": ["./node_modules/process"]
+    }
   }
+
 }

@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
 
 
@@ -25,6 +26,7 @@ public class FriendshipController {
 	public ResponseEntity<FriendshipDto> sendRequest( @AuthenticationPrincipal CustomUserDetails sender, @RequestParam Long receiverId) {
 
 		FriendshipDto result = friendService.sendFriendRequest(sender.getId(), receiverId);
+
 		return ResponseEntity.ok(result);
 	}
 

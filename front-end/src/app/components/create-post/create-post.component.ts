@@ -90,4 +90,9 @@ export class CreatePostComponent implements OnInit {
     (event.target as HTMLImageElement).src = 'assets/images/unknown.png';
   }
 
+  autoGrow(event: Event) {
+    const textarea = event.target as HTMLTextAreaElement;
+    textarea.style.height = 'auto';
+    textarea.style.height = textarea.scrollHeight + 'px';
+  }
 }

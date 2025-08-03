@@ -1,18 +1,19 @@
 package com.springboot.friend_finder.service.impl;
 
 import com.springboot.friend_finder.constant.RequestStatus;
+import com.springboot.friend_finder.dto.FriendRequestNotification;
 import com.springboot.friend_finder.dto.FriendshipDto;
 import com.springboot.friend_finder.dto.authDto.UserDto;
 import com.springboot.friend_finder.dto.authDto.UserPost;
 import com.springboot.friend_finder.entity.Friendship;
 import com.springboot.friend_finder.entity.auth.User;
 import com.springboot.friend_finder.exceptions.BadRequestException;
-import com.springboot.friend_finder.exceptions.ResourceNotFoundException;
 import com.springboot.friend_finder.mapper.FriendshipMapper;
 import com.springboot.friend_finder.mapper.UserMapper;
 import com.springboot.friend_finder.repository.FriendshipRepository;
 import com.springboot.friend_finder.repository.auth.UserRepository;
 import com.springboot.friend_finder.service.IFriendService;
+import com.springboot.friend_finder.service.NotificationService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
@@ -35,21 +36,23 @@ public class FriendService implements IFriendService {
 
 	private final FriendshipMapper friendshipMapper;
 
+	private final NotificationService notificationService;
+
 
 	@Override
 	public List<UserDto> getFriends(Long userId) {
 		List<User> friends = friendshipRepository.findFriendsOfUser(userId);
-		if (friends.isEmpty()) {
-			throw new ResourceNotFoundException("no.friends");
-		}
+
 		return userMapper.toDtoList(friends);
 	}
 
 	@Override
 	public FriendshipDto acceptFriendRequest(Long senderId, Long receiverId) {
-		Optional<Friendship> existing = friendshipRepository.findBySenderAndReceiver(
-				userRepository.findById(senderId).orElseThrow(() -> new BadRequestException("sender.notfound")),
-				userRepository.findById(receiverId).orElseThrow(() -> new BadRequestException("receiver.notfound")));
+
+		User sender = userRepository.findById(senderId).orElseThrow(() -> new BadRequestException("sender.notfound"));
+		User receiver = userRepository.findById(receiverId).orElseThrow(() -> new BadRequestException("receiver.notfound"));
+		;
+		Optional<Friendship> existing = friendshipRepository.findBySenderAndReceiver(sender, receiver);
 		if (existing.isPresent()) {
 			Friendship f = existing.get();
 
@@ -61,7 +64,17 @@ public class FriendService implements IFriendService {
 			f.setStatus(RequestStatus.ACCEPTED);
 			f.setRespondedAt(LocalDateTime.now());
 			friendshipRepository.save(f);
-			return friendshipMapper.toDto(friendshipRepository.save(f));
+
+			FriendshipDto fDto  = friendshipMapper.toDto(f);
+
+			FriendRequestNotification notificationDto = FriendRequestNotification.builder()
+					.senderName(receiver.getUserDetails().getName())
+					.message(receiver.getUserDetails().getName() + " accepted your friend request!")
+					.friendship(fDto)
+					.build();
+
+			notificationService.sendNotificationToUser(sender.getEmail(), notificationDto);
+			return fDto;
 
 		}
 		throw new BadRequestException("friendship.notfound");
@@ -95,7 +108,20 @@ public class FriendService implements IFriendService {
 								.sentAt(LocalDateTime.now())
 								.build();
 
-		return friendshipMapper.toDto(friendshipRepository.save(newRequest));
+		friendshipRepository.save(newRequest);
+
+		FriendshipDto friendshipDto = friendshipMapper.toDto(newRequest);
+
+
+		FriendRequestNotification notificationDto = FriendRequestNotification.builder()
+				.senderName(sender.getUserDetails().getName())
+				.message(sender.getUserDetails().getName() + " sent you a friend request!")
+				.friendship(friendshipDto)
+				.build();
+
+		notificationService.sendNotificationToUser(receiver.getEmail(), notificationDto);
+
+		return friendshipDto;
 	}
 
 	@Override
@@ -116,9 +142,7 @@ public class FriendService implements IFriendService {
 	public List<FriendshipDto> getPendingRequests(Long userId) {
 		List<Friendship> friendships = friendshipRepository.findPendingRequestsForUser(
 				userRepository.findById(userId).orElseThrow(() -> new BadRequestException("user.notfound")));
-		if (friendships.isEmpty()) {
-			throw new BadRequestException("no.pending.requests");
-		}
+
 		return friendshipMapper.toDtoList(friendships);
 	}
 
@@ -126,9 +150,7 @@ public class FriendService implements IFriendService {
 
 	List<Friendship> friendships =	friendshipRepository.findAllBySender(
 				userRepository.findById(userId).orElseThrow(() -> new BadRequestException("user.notfound")));
-	if (friendships.isEmpty()) {
-		throw new BadRequestException("no.sent.requests");
-	}
+
 		return friendshipMapper.toDtoList(friendships);
 	}
 
@@ -148,9 +170,7 @@ public class FriendService implements IFriendService {
 	public List<UserPost> getSuggestions(Long userId) {
 		Pageable topFive = PageRequest.of(0, 5);
 		List<User> users = friendshipRepository.findSuggestedUsers(userId, topFive);
-		if (users.isEmpty()) {
-			throw new BadRequestException("no.suggestions");
-		}
+
 		return userMapper.userToUserPostList(users);
 	}
 

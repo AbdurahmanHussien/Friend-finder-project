@@ -1,6 +1,6 @@
-import { Component, Input, Output, EventEmitter, OnInit } from '@angular/core';
+import { Component, Input , OnInit } from '@angular/core';
 import { Post } from '../../model/post';
-import { NgForOf, NgIf } from '@angular/common';
+import {NgForOf, NgIf, NgOptimizedImage} from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { TimeagoPipe } from '../../service/timeago.pipe';
 import { TimelineService } from '../../service/timeline.service';
@@ -13,7 +13,8 @@ import {Reply} from '../../model/Reply';
     FormsModule,
     NgForOf,
     NgIf,
-    TimeagoPipe
+    TimeagoPipe,
+    NgOptimizedImage
   ],
   templateUrl: './post.component.html',
   styleUrls: ['./post.component.css'],

@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 
 @Setter
 @Getter
@@ -27,6 +28,13 @@ public class UserDetails implements Serializable {
     private Gender gender;
 
     private String profileImage;
+
+    private String profileCoverImage;
+
+    private String about;
+
+    @Column(name = "birth_date")
+    private LocalDate birthDate;
 
 
     @OneToOne(mappedBy = "userDetails")

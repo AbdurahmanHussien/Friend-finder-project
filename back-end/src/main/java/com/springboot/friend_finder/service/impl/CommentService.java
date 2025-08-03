@@ -18,7 +18,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 
 @Service
@@ -117,15 +116,16 @@ public class CommentService implements ICommentService {
         }
         
         List<Comment> comments = commentRepository.findByPostIdOrderByCreatedAtDesc(postId);
-        
-        return comments.stream()
+		
+		return comments.stream()
                 .map(comment -> {
                     CommentDto dto = commentMapper.toDto(comment);
                     boolean isLiked = commentLikeRepository.existsByUserAndComment(user, comment);
                     dto.setLikedByCurrentUser(isLiked);
                     return dto;
                 })
-                .collect(Collectors.toList());
+                .toList();
+
     }
 
 

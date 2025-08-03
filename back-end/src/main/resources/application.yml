@@ -1,11 +1,6 @@
 spring:
   application:
     name: friend-finder
-  datasource:
-    url: jdbc:oracle:thin:@//localhost:1523/pdb
-    username: hr
-    password: hr
-    driver-class-name: oracle.jdbc.OracleDriver
 
   cache:
     type: redis
@@ -30,11 +25,6 @@ spring:
       hibernate:
         format_sql: true
 
-file:
-  upload-dir: D:/FriendFinderUploads/posts
-  avatar-dir: D:/FriendFinderUploads/avatars
-
-
 
 logging:
   level:
@@ -48,3 +38,33 @@ jwt:
 
 server:
   port: 9090
+
+
+---
+spring:
+  config:
+    activate:
+      on-profile: default
+  datasource:
+    url: jdbc:oracle:thin:@//localhost:1523/pdb
+    username: hr
+    password: hr
+    driver-class-name: oracle.jdbc.OracleDriver
+
+file:
+  upload-dir: D:/FriendFinderUploads/posts
+  avatar-dir: D:/FriendFinderUploads/avatars
+---
+spring:
+  config:
+    activate:
+      on-profile: docker
+  datasource:
+    url: jdbc:oracle:thin:@//oracle-db:1523/XEPDB1
+    username: hr
+    password: hr
+    driver-class-name: oracle.jdbc.OracleDriver
+
+file:
+  upload-dir: /app/uploads/posts
+  avatar-dir: /app/uploads/avatars

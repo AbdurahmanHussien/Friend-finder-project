@@ -1,7 +1,10 @@
 package com.springboot.friend_finder.request;
+
 import com.springboot.friend_finder.constant.Gender;
 import jakarta.validation.constraints.*;
 import lombok.Builder;
+
+import java.time.LocalDate;
 
 @Builder
 public record RegisterRequest(  @NotBlank(message = "user.name.notblank")
@@ -23,8 +26,8 @@ public record RegisterRequest(  @NotBlank(message = "user.name.notblank")
                                 @NotBlank(message = "email.notblank")
                                 @Email(message = "email.valid")
                                String email,
-                               @Min(value = 16, message = "Min.age") @Max(value = 80, message = "max.age")
-                               int age,
+
+                               LocalDate birthDate,
 
                                 Gender gender
 

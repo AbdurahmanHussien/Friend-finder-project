@@ -21,10 +21,10 @@
         </a>
 
 
-        <div class="relative group">
+        <div class="relative group ">
           <button class="text-sm font-semibold text-gray-700 dark:text-gray-300 hover:text-blue-700 dark:hover:text-blue-400">Timeline</button>
-          <div class="absolute hidden group-hover:block bg-white dark:bg-[#242526] shadow-md mt-2 rounded-md w-48">
-            <a routerLink="/timeline" routerLinkActive="bg-gray-100 dark:bg-gray-700" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700">Timeline</a>
+          <div class="absolute hidden group-hover:block bg-white dark:bg-[#242526] shadow-md mt-2 rounded-2xl w-48">
+            <a routerLink="/timeline" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700">Timeline</a>
             <a routerLink="/timeline-about" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700">Timeline About</a>
             <a routerLink="/timeline-album" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700">Timeline Album</a>
             <a routerLink="/timeline-friends" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700">Timeline Friends</a>
@@ -50,40 +50,38 @@
           <i class="fas fa-user-circle text-gray-600 dark:text-gray-200 text-xl"></i>
         </a>
 
-        <!-- Logout -->
-        <button (click)="logout()" class="p-2 rounded-full bg-gray-100 hover:bg-gray-200 dark:bg-[#242526] dark:hover:bg-gray-700">
-          <i class="fas fa-sign-out-alt text-red-600 dark:text-red-400 text-xl"></i>
-        </button>
 
         <!-- Requests -->
         <div class="relative">
           <button (click)="toggleRequestsMenu()" class="p-2 rounded-full bg-gray-100 hover:bg-gray-200 dark:bg-[#242526] dark:hover:bg-gray-700 relative">
             <i class="fas fa-user-friends text-gray-600 dark:text-gray-200 text-xl"></i>
-            <span *ngIf="friends.length > 0" class="absolute -top-1 -right-1 bg-red-600 text-white text-xs w-5 h-5 rounded-full flex items-center justify-center">
-              {{ friends.length }}
+            <span *ngIf="friendsRequest().length > 0" class="absolute -top-1 -right-1 bg-red-600 text-white text-xs w-5 h-5 rounded-full flex items-center justify-center">
+              {{ friendRequestCount() }}
             </span>
           </button>
 
           <!-- Requests Dropdown -->
-          <div *ngIf="requestsMenuOpen" class="absolute right-0 mt-2 w-72 bg-white dark:bg-[#242526] shadow-md rounded-md z-50 max-h-80 overflow-y-auto">
-            <ng-container *ngIf="friends.length > 0; else noRequests">
-              <div *ngFor="let request of friends" class="p-3 border-b border-gray-200 dark:border-gray-700 flex gap-3 items-center">
+          @if(requestsMenuOpen()){
+          <div  class="absolute right-0 mt-2 w-72 bg-white dark:bg-[#242526] shadow-md rounded-2xl z-50 max-h-80 overflow-y-auto">
+              @for( request of friendsRequest(); track  request.id){
+              <div  class="p-3 border-b border-gray-200 dark:border-gray-700 flex gap-3 items-center">
                 <img [src]="'http://localhost:9090'+request.sender.profileImage"
                      (error)="onImageError($event)"
-                     class="w-10 h-10 rounded-full object-cover border border-gray-300 dark:border-gray-600" alt=""/>
+                     class="w-10 h-10 rounded-full object-cover border border-gray-300 dark:border-gray-600" alt=""
+                     width="40" height="40"/>
                 <div class="flex-1">
                   <div class="text-sm font-medium text-gray-800 dark:text-white">{{ request.sender.name }}</div>
                   <div class="flex justify-end gap-2 mt-1">
-                    <button (click)="acceptRequest(request.sender.id)" class="text-xs text-white bg-green-600 px-2 py-1 rounded">Accept</button>
-                    <button (click)="rejectRequest(request.sender.id)" class="text-xs text-white bg-red-600 px-2 py-1 rounded">Reject</button>
+                    <button (click)="acceptRequest(request.sender.id)" class="text-xs text-white bg-green-600 px-2 py-1 rounded-2xl">Accept</button>
+                    <button (click)="rejectRequest(request.sender.id)" class="text-xs text-white bg-red-600 px-2 py-1 rounded-2xl">Reject</button>
                   </div>
                 </div>
               </div>
-            </ng-container>
-            <ng-template #noRequests>
-              <div class="p-3 text-sm text-gray-500 dark:text-gray-400">No pending requests</div>
-            </ng-template>
+              } @empty {
+                <div class="p-3 text-sm text-gray-500 dark:text-gray-400">No pending requests</div>
+              }
           </div>
+          }
         </div>
 
         <!-- Mobile Menu Button -->
@@ -92,7 +90,9 @@
             <i class="fas fa-bars text-xl"></i>
           </button>
         </div>
-
+        <button (click)="logout()" class="p-2 rounded-full bg-gray-100 hover:bg-gray-200 dark:bg-[#242526] dark:hover:bg-gray-700">
+          <i class="fas fa-sign-out-alt text-red-600 dark:text-red-400 text-xl"></i>
+        </button>
       </div>
     </div>
   </div>

@@ -2,23 +2,26 @@
   <div class="flex items-center mb-4 gap-3">
     <img  [src]="imageUrl"
           (error)="onImageError($event)"
-         class="w-10 h-10 rounded-full object-cover"  alt=""/>
-    <input [(ngModel)]="text"
-           type="text"
+         class="w-12 h-12 rounded-full"  alt=""/>
+    <textarea [(ngModel)]="text"
+           rows="1"
            placeholder="What's on your mind?"
-           class="w-full px-4 py-2 border border-gray-300  rounded-full focus:outline-none focus:ring dark:bg-[#242526] dark:text-white dark:placeholder:text-[#b0b3b8]"
-    />
+              (input)="autoGrow($event)"
+           class="w-full px-4 py-2 border border-gray-300  rounded-full focus:outline-none focus:ring dark:bg-[#242526] dark:text-white dark:placeholder:text-[#b0b3b8] resize-none overflow-hidden scrollbar-hide"
+    >
+    </textarea>
   </div>
 
   <div class="flex items-center justify-between mt-3">
     <label class="flex items-center gap-2 cursor-pointer">
       <input type="file" accept="image/*,video/*" hidden (change)="onFileSelected($event)" />
-      <span class="text-blue-600 text-sm font-medium"> 📸 Add Photo/Video</span>
+      <i class="fas fa-image text-blue-600 text-lg"></i>
+      <span class="text-blue-600 text-sm font-medium ">Add Photo/Video</span>
     </label>
 
     <button (click)="submitPost()"
             [disabled]="submitting"
-            class="bg-blue-600 text-white px-4 py-1 rounded hover:bg-blue-700 text-sm disabled:bg-gray-400">
+            class="bg-blue-600 text-white px-4 py-1 rounded-2xl hover:bg-blue-700 text-sm disabled:bg-gray-400">
       {{ submitting ? 'Posting...' : 'Post' }}
     </button>
   </div>

@@ -13,6 +13,7 @@
     <version>0.0.1-SNAPSHOT</version>
     <name>friend_finder</name>
     <description>friend_finder</description>
+    <packaging>jar</packaging>
     <url/>
     <licenses>
         <license/>
@@ -124,6 +125,7 @@
     </dependencies>
 
     <build>
+        <finalName>friend-finder</finalName>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -147,6 +149,13 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>repackage</goal>
+                        </goals>
+                    </execution>
+                </executions>
                 <configuration>
                     <excludes>
                         <exclude>

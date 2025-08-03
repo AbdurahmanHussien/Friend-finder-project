@@ -65,6 +65,7 @@ public class AuthenticationService implements IAuthenticationService {
                 .name(request.name())
                 .phoneNum(request.phoneNum())
                 .gender(request.gender())
+                .birthDate(request.birthDate())
                 .build();
 
         Optional<User> getUser= userRepository.findByEmail(request.email());

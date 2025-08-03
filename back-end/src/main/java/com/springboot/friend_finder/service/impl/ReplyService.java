@@ -65,6 +65,7 @@ public class ReplyService implements IReplyService {
             throw new ResourceNotFoundException("comment.not.found");
         }
         List<CommentsReply> replies = replyRepository.findByCommentIdOrderByCreatedAtDesc(commentId);
+
         return replies.stream()
                 .map(replyMapper::toDto)
                 .collect(Collectors.toList());

@@ -4,6 +4,7 @@ import {ActivatedRoute, Router, RouterLink} from '@angular/router';
 import {ToastrService} from 'ngx-toastr';
 import {CommonModule} from "@angular/common";
 import {AuthService} from '../../service/auth.service';
+import {NotificationService} from '../../service/notification.service';
 
 @Component({
   selector: 'app-login',
@@ -31,7 +32,8 @@ export class LoginComponent implements OnInit {
   constructor(private router: Router,
               private route: ActivatedRoute,
               private loginService: AuthService,
-              private toastr: ToastrService) {
+              private toastr: ToastrService,
+              private notificationService: NotificationService) {
   }
 
   errorMessage: String = '';
@@ -53,21 +55,8 @@ export class LoginComponent implements OnInit {
       email: formValue.email.trim().toLowerCase()
     };
 
-    if (localStorage.getItem('jwt_token')) {
-      this.router.navigate(['/']);
-    }
-
     this.loginService.login(payload).subscribe({
-      next: (res) => {
-        const token = res.token;
-        const refreshToken = res.refreshToken;
-        localStorage.setItem('jwt_token', token);
-        localStorage.setItem('refresh_token', refreshToken);
-        localStorage.setItem("user", JSON.stringify(res.user));
-        this.toastr.success('You have been logged in successfully', 'Welcome')
-        this.router.navigate(['/'])
-      },
-
+      next: () => {},
       error: () => this.errorMessage = 'Invalid email or password'
     });
   }

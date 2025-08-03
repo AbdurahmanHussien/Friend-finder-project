@@ -1,7 +1,6 @@
 package com.springboot.friend_finder.config.jwt;
 
 
-import com.springboot.friend_finder.entity.auth.Role;
 import com.springboot.friend_finder.entity.auth.User;
 import com.springboot.friend_finder.service.auth.CustomUserDetails;
 import io.jsonwebtoken.Claims;
@@ -16,7 +15,6 @@ import java.nio.charset.StandardCharsets;
 import java.security.Key;
 import java.util.Date;
 import java.util.function.Function;
-import java.util.stream.Collectors;
 
 
 @Component
@@ -29,7 +27,6 @@ public class JwtUtils {
 
     public String generateToken(User user, long expirationMillis) {
         Claims claims = Jwts.claims().setSubject(user.getEmail());
-        claims.put("roles", user.getRoles().stream().map(Role::getRoleType).collect(Collectors.toList()));
         return Jwts.builder()
                 .setSubject("jwtToken")
                 .setClaims(claims)

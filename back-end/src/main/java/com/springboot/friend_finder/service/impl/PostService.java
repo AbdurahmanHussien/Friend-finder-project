@@ -49,9 +49,7 @@ public class PostService implements IPostService {
 				.orElseThrow(() -> new ResourceNotFoundException("user.not.found"));
 		List<Post> posts = postRepository.findByUser(user);
 
-		if (posts.isEmpty()) {
-			throw new ResourceNotFoundException("user.has.no.posts");
-		}
+
 		return postMapper.toDtoList(posts);
 	}
 
@@ -146,9 +144,6 @@ public class PostService implements IPostService {
 
 		List<Post> posts = postRepository.findTimelinePosts(userId);
 
-		if (posts.isEmpty()) {
-			throw new ResourceNotFoundException("timeline.is.empty");
-		}
 		List<PostDto> dtos = posts.stream()
 				.map(post -> {
 					boolean isLiked = likeService.existsByUserAndPost(user, post);

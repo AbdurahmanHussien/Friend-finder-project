@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import {Router, RouterOutlet} from '@angular/router';
+import {NavigationEnd, Router, RouterOutlet} from '@angular/router';
 import {LoaderComponent} from './components/loader/loader.component';
 import {NgClass, NgIf} from '@angular/common';
 import {FooterComponent} from './components/footer/footer.component';
@@ -17,18 +17,17 @@ import {AuthService} from './service/auth.service';
 export class AppComponent {
   title = 'Friend-finder';
 
-  scrollToTop() {
-    window.scrollTo({
-      top: 0,
-      behavior: 'smooth' });
-  }
 
   isLoginPage = false;
   isDark = false;
 
   constructor(private router: Router, private authService: AuthService) {
-    this.router.events.subscribe(() => {
-      this.isLoginPage = this.router.url === '/login' || this.router.url === '/signup' || this.router.url === '/login?loggedOut=true';
+    this.checkLoginPage(this.router.url);
+
+    this.router.events.subscribe(event => {
+      if (event instanceof NavigationEnd) {
+        this.checkLoginPage(event.urlAfterRedirects);
+      }
     });
   }
   ngOnInit(): void {
@@ -42,6 +41,17 @@ export class AppComponent {
   toggleDarkMode() {
     this.isDark = document.documentElement.classList.toggle('dark');
     localStorage.setItem('theme', this.isDark ? 'dark' : 'light');
+  }
+
+
+  checkLoginPage(url: string) {
+    this.isLoginPage = url.includes('/login') || url.includes('/signup');
+  }
+
+  scrollToTop() {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth' });
   }
 
 }
