@@ -61,7 +61,7 @@ export class CreatePostComponent implements OnInit {
     this.submitting = true;
 
     this.timelineService.createPost(this.text, this.selectedFile!).subscribe({
-      next: (response) => {
+      next: () => {
         this.resetForm();
         this.toastr.success('Post submitted successfully', 'Success');
         this.postCreated.emit();

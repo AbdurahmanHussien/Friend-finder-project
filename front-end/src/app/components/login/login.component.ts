@@ -29,11 +29,8 @@ export class LoginComponent implements OnInit {
     });
   }
 
-  constructor(private router: Router,
-              private route: ActivatedRoute,
-              private loginService: AuthService,
-              private toastr: ToastrService,
-              private notificationService: NotificationService) {
+  constructor(private route: ActivatedRoute,
+              private loginService: AuthService) {
   }
 
   errorMessage: String = '';

@@ -13,8 +13,7 @@ import {Reply} from '../../model/Reply';
     FormsModule,
     NgForOf,
     NgIf,
-    TimeagoPipe,
-    NgOptimizedImage
+    TimeagoPipe
   ],
   templateUrl: './post.component.html',
   styleUrls: ['./post.component.css'],

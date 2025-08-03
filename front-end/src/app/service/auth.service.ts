@@ -32,7 +32,6 @@ export class AuthService {
           localStorage.setItem("user", JSON.stringify(res.user));
           this.toastr.success('You have been logged in successfully', 'Welcome')
           this.authStatus.next(true);
-          ;
           this.router.navigate(['/'])
         }
       })

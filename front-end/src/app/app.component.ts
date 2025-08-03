@@ -4,7 +4,6 @@ import {LoaderComponent} from './components/loader/loader.component';
 import {NgClass, NgIf} from '@angular/common';
 import {FooterComponent} from './components/footer/footer.component';
 import {HeaderComponent} from './components/header/header.component';
-import {SidebarComponent} from './components/sidebar/sidebar.component';
 import {AuthService} from './service/auth.service';
 
 @Component({
@@ -21,7 +20,7 @@ export class AppComponent {
   isLoginPage = false;
   isDark = false;
 
-  constructor(private router: Router, private authService: AuthService) {
+  constructor(private router: Router) {
     this.checkLoginPage(this.router.url);
 
     this.router.events.subscribe(event => {

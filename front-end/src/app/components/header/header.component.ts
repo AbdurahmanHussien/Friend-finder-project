@@ -25,7 +25,6 @@ export class HeaderComponent implements OnInit {
   private headerService = inject(HeaderService);
   private notificationService = inject(NotificationService);
   private authService = inject(AuthService);
-  private router = inject(Router);
   private toastr = inject(ToastrService);
 
 

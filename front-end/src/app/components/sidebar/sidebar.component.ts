@@ -7,8 +7,7 @@ import {NgOptimizedImage} from '@angular/common';
   selector: 'app-sidebar',
   imports: [
     RouterLink,
-    RouterLinkActive,
-    NgOptimizedImage
+    RouterLinkActive
   ],
   templateUrl: './sidebar.component.html',
   styleUrl: './sidebar.component.css'
