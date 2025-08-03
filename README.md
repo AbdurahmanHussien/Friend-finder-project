@@ -6,6 +6,14 @@ It allows users to share posts, connect with friends, like, comment, and manage 
 
 ---
 
+## 📸 Screenshots
+
+| Login Page | Signup Page | Home page | Contact Us Page |
+|------------|-------------|-----------|-----------------|
+| ![Login Page](/screenshots/screenshot1.png) |  ![Signup(Darkmode)](/screenshots/screenshot2.png) | ![Home](/screenshots/screenshot3.png) | ![contactUs](/screenshots/screenshot4.png). 
+
+---
+
 ## Features
 
 ### User Management
