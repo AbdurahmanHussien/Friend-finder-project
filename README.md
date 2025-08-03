@@ -10,7 +10,7 @@ It allows users to share posts, connect with friends, like, comment, and manage 
 
 | Login Page | Signup Page | Home page | Contact Us Page |
 |------------|-------------|-----------|-----------------|
-| ![Login Page](/screenshots/Screenshot1.png) |  ![Signup(Darkmode)](/screenshots/Screenshot2.png) | ![Home](/screenshots/Screenshot3.png) | ![contactUs](/screenshots/Screenshot4.png). 
+| ![Login Page](/screenshots/Screenshot1.png) |  ![Signup(Darkmode)](/screenshots/Screenshot2.png) | ![Home](/screenshots/Screenshot3.png) | ![contactUs](/screenshots/Screenshot4.png)
 
 ---
 
