@@ -1,5 +1,5 @@
 
-# Friend Finder - Full Stack Application
+# Friend Finder - Full Stack Application (uncompleted)
 
 Friend Finder is a full-stack social media application built with **Angular (frontend)** and **Spring Boot (backend)**.  
 It allows users to share posts, connect with friends, like, comment, and manage their social interactions in real time.
@@ -10,7 +10,7 @@ It allows users to share posts, connect with friends, like, comment, and manage 
 
 | Login Page | Signup Page | Home page | Contact Us Page |
 |------------|-------------|-----------|-----------------|
-| ![Login Page](/screenshots/screenshot1.png) |  ![Signup(Darkmode)](/screenshots/screenshot2.png) | ![Home](/screenshots/screenshot3.png) | ![contactUs](/screenshots/screenshot4.png). 
+| ![Login Page](/screenshots/Screenshot1.png) |  ![Signup(Darkmode)](/screenshots/Screenshot2.png) | ![Home](/screenshots/Screenshot3.png) | ![contactUs](/screenshots/Screenshot4.png). 
 
 ---
 
