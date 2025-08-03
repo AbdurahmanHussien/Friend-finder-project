@@ -142,4 +142,11 @@ public class CommentService implements ICommentService {
         Comment savedComment = commentRepository.save(comment);
         return commentMapper.toDto(savedComment);
     }
+
+	@Override
+	public CommentDto getCommentById(Long commentId) {
+		Comment comment = commentRepository.findById(commentId)
+				.orElseThrow(() -> new ResourceNotFoundException("comment.not.found"));
+		return commentMapper.toDto(comment);
+	}
 }

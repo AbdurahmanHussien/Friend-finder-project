@@ -45,4 +45,9 @@ export class TimelineComponent {
     });
   }
 
+  confirmDelete(id: number) {
+    this.timelineService.deletePost(id).subscribe(() => {
+      this.loadPosts();
+    });
+  }
 }

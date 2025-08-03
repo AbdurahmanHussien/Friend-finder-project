@@ -2,15 +2,16 @@ package com.springboot.friend_finder.entity;
 
 import com.springboot.friend_finder.entity.auth.User;
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 @Data
 @Builder
@@ -42,7 +43,7 @@ public class Comment {
 	private List<CommentsReply> replies;
 
 	@OneToMany(mappedBy = "comment", cascade = CascadeType.ALL, orphanRemoval = true)
-	private Set<CommentLike> likes = new HashSet<>();
+	private List<CommentLike> likes;
 
 	@CreatedDate
 	private LocalDateTime createdAt;

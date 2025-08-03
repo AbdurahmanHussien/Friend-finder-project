@@ -49,4 +49,11 @@ export class TimelineService {
     return this.http.get<CommentDto[]>(`http://localhost:9090/api/comment/post/${postId}`);
   //http://localhost:9090/api/comment/post/{{postId}}
   }
+
+  deletePost(postId: number): Observable<any> {
+    return this.http.delete<any>(`http://localhost:9090/api/posts/${postId}`);
+  }
+  deleteComment(commentId: number): Observable<any> {
+    return this.http.delete<any>(`http://localhost:9090/api/comment/${commentId}`);   //http://localhost:9090/api/comment/{{commentId}}
+  }
 }

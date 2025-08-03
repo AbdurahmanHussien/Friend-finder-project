@@ -12,4 +12,5 @@ public interface CommentLikeRepository extends JpaRepository<CommentLike, Long> 
     boolean existsByUserAndComment(User user, Comment comment);
     int countByComment(Comment comment);
     void deleteByUserAndComment(User user, Comment comment);
+    void deleteAllByComment(Comment comment);
 }

@@ -1,6 +1,6 @@
-import { Component, Input , OnInit } from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import { Post } from '../../model/post';
-import {NgForOf, NgIf, NgOptimizedImage} from '@angular/common';
+import {NgClass, NgForOf, NgIf, NgOptimizedImage} from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { TimeagoPipe } from '../../service/timeago.pipe';
 import { TimelineService } from '../../service/timeline.service';
@@ -13,7 +13,8 @@ import {Reply} from '../../model/Reply';
     FormsModule,
     NgForOf,
     NgIf,
-    TimeagoPipe
+    TimeagoPipe,
+    NgClass
   ],
   templateUrl: './post.component.html',
   styleUrls: ['./post.component.css'],
@@ -34,6 +35,7 @@ export class PostComponent implements OnInit {
 
   showAllComments: { [postId: number]: boolean } = {};
   expandedReplies: { [commentId: number]: boolean } = {};
+  @Output() onDelete = new EventEmitter<unknown>();
 
   toggleComments(postId: number) {
     this.showAllComments[postId] = true;
@@ -165,4 +167,17 @@ export class PostComponent implements OnInit {
     return /\.(mp4|mov|ogg)$/i.test(url);
   }
 
+  deletePost(postId: number) {
+    this.timelineService.deletePost(postId).subscribe(() => {
+      this.onDelete.emit(postId);
+    });
+
+  }
+
+  deleteComment(id: number) {
+    this.timelineService.deleteComment(id).subscribe(() => {
+      this.post.commentCount--;
+      this.getCommentsByPostId(this.post.id);
+    });
+  }
 }

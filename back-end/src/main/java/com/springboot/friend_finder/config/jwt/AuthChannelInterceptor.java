@@ -36,7 +36,6 @@ public class AuthChannelInterceptor implements ChannelInterceptor {
 
 		StompHeaderAccessor accessor = MessageHeaderAccessor.getAccessor(message, StompHeaderAccessor.class);
 
-		// بنعترض بس رسائل الـ CONNECT
 		if (StompCommand.CONNECT.equals(accessor.getCommand())) {
 			// بنقرأ الـ header بتاع الـ Authorization
 			String authHeader = accessor.getFirstNativeHeader("Authorization");

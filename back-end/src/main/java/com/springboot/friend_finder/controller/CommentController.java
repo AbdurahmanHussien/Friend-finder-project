@@ -39,13 +39,18 @@ public class CommentController {
     }
 
     @PostMapping("/{commentId}/likeUnlike")
-    public ResponseEntity<String> likeUnlikeComment(@PathVariable Long commentId, @AuthenticationPrincipal CustomUserDetails userDetails) {
+    public ResponseEntity<Void> likeUnlikeComment(@PathVariable Long commentId, @AuthenticationPrincipal CustomUserDetails userDetails) {
         commentService.likeAndUnlikeComment(commentId, userDetails.getId());
-        return ResponseEntity.ok("Done");
+        return ResponseEntity.ok().build();
     }
 
     @GetMapping("/post/{postId}")
     public ResponseEntity<List<CommentDto>> getCommentsByPost(@PathVariable Long postId, @AuthenticationPrincipal CustomUserDetails userDetails) {
         return ResponseEntity.ok(commentService.getCommentsByPost(postId, userDetails.getId()));
+    }
+
+    @GetMapping("/{commentId}")
+    public ResponseEntity<CommentDto> getCommentById(@PathVariable Long commentId) {
+        return ResponseEntity.ok(commentService.getCommentById(commentId));
     }
 }

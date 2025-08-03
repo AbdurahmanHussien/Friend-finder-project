@@ -17,5 +17,5 @@ public interface ICommentService {
 	List<CommentDto> getCommentsByPost(Long postId, Long userId);
 
 	CommentDto saveComment(CommentDto commentDto);
-
+	CommentDto getCommentById(Long commentId);
 }
