@@ -32,7 +32,10 @@ export class SidebarComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.getFriendsNumber();
+    this.sidebarService.friendsNumber$.subscribe(count => {
+      this.friendsNumber = count;
+    });
+    this.sidebarService.updateFriendsNumber();
   }
 
   friendsNumber: number = 0

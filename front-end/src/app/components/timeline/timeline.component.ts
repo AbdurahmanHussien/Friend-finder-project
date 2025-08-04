@@ -6,18 +6,16 @@ import {
 } from '@angular/core';
 import { Post } from '../../model/post';
 import {BehaviorSubject, Observable} from 'rxjs';
-import { NgForOf, NgIf, AsyncPipe } from '@angular/common';
+import { AsyncPipe } from '@angular/common';
 import { PostComponent } from '../post/post.component';
 import {TimelineService} from '../../service/timeline.service';
 
 @Component({
   selector: 'app-timeline',
   imports: [
-    NgIf,
-    NgForOf,
     AsyncPipe,
     PostComponent
-  ],
+],
   templateUrl: './timeline.component.html',
   styleUrls: ['./timeline.component.css'],
   standalone: true

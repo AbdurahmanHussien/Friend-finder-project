@@ -1,12 +1,14 @@
-import { Component, OnInit, computed, effect, inject, signal } from '@angular/core';
+import {Component, OnInit, computed, effect, inject, signal, OnChanges, AfterViewInit} from '@angular/core';
 import { Router, RouterLink, RouterLinkActive } from '@angular/router';
 import { HeaderService } from '../../service/header.service';
 import { NotificationService } from '../../service/notification.service';
 import { Friendship } from '../../model/Friendsip';
-import { NgIf} from '@angular/common';
+
 import { ToastrService } from 'ngx-toastr';
 import {AuthService} from '../../service/auth.service';
 import {FriendRequestNotification} from '../../model/FriendRequestNotification';
+import {SidebarService} from '../../service/sidebar.service';
+import tippy from 'tippy.js';
 
 @Component({
   selector: 'app-header',
@@ -14,18 +16,26 @@ import {FriendRequestNotification} from '../../model/FriendRequestNotification';
   styleUrls: ['./header.component.css'],
   imports: [
     RouterLinkActive,
-    RouterLink,
-    NgIf,
-  ],
+    RouterLink
+],
   standalone: true
 })
-export class HeaderComponent implements OnInit {
+export class HeaderComponent implements OnInit, AfterViewInit {
 
   // --- Injections ---
   private headerService = inject(HeaderService);
   private notificationService = inject(NotificationService);
   private authService = inject(AuthService);
   private toastr = inject(ToastrService);
+  private sidebarService = inject(SidebarService);
+
+  ngAfterViewInit(): void {
+    tippy('[data-tippy-content]', {
+      theme: 'light',
+      animation: 'shift-toward-subtle',
+      placement: 'bottom'
+    });
+  }
 
 
   friendsRequest= signal<Friendship[]>([]);
@@ -88,6 +98,8 @@ export class HeaderComponent implements OnInit {
   acceptRequest(requestId: number) {
     this.headerService.acceptRequest(requestId).subscribe(() => {
       this.friendsRequest.update(friends => friends.filter(f => f.id !== requestId));
+      this.loadFriendRequests();
+      this.sidebarService.updateFriendsNumber();
       this.toastr.success('Friend request accepted!', 'Friend Request', {
         timeOut: 5000,
         positionClass: 'toast-bottom-right',
@@ -100,6 +112,7 @@ export class HeaderComponent implements OnInit {
   rejectRequest(requestId: number) {
     this.headerService.rejectRequest(requestId).subscribe(() => {
       this.friendsRequest.update(friends => friends.filter(f => f.id !== requestId));
+     this.loadFriendRequests();
       this.toastr.error('you rejected the friend request' , 'Friend Request',{
         timeOut: 5000,
         positionClass: 'toast-bottom-right',

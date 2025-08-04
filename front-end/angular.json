@@ -30,6 +30,7 @@
             ],
             "styles": [
               "node_modules/ngx-toastr/toastr.css",
+              "node_modules/tippy.js/dist/tippy.css",
               "src/styles.css"
             ],
             "scripts": [

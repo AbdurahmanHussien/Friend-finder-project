@@ -1,7 +1,8 @@
-<ng-container *ngIf="posts$ | async as posts">
-  <app-post class="flex justify-center max-w-2xl mx-auto"
-            *ngFor="let post of posts"
-            [post]="post"
-            (onDelete)="loadPosts()"
-  ></app-post>
-</ng-container>
+@if (posts$ | async; as posts) {
+  @for (post of posts; track post.id) {
+    <app-post class="flex justify-center max-w-2xl mx-auto"
+      [post]="post"
+      (onDelete)="loadPosts()"
+    ></app-post>
+  }
+}

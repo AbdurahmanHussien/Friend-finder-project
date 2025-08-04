@@ -26,40 +26,46 @@
           <div class="mb-4">
             <label for="name" class="block text-gray-700 dark:text-gray-200 font-medium mb-1">Your Name</label>
             <input type="text" id="name" name="name" [(ngModel)]="contactData.name"
-                   placeholder="Your Name" required
-                   class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-600 dark:bg-[#242526] dark:text-white dark:focus:border-none transition-all" />
+              placeholder="Your Name" required
+              class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-600 dark:bg-[#242526] dark:text-white dark:focus:border-none transition-all" />
           </div>
 
           <div class="mb-4">
             <label for="email" class="block text-gray-700 dark:text-gray-200 font-medium mb-1">Your Email</label>
             <input type="email" id="email" name="email" [(ngModel)]="contactData.email"
-                   placeholder="Your Email" required
-                   class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-600 dark:bg-[#242526] dark:text-white dark:focus:border-none transition-all" />
+              placeholder="Your Email" required
+              class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-600 dark:bg-[#242526] dark:text-white dark:focus:border-none transition-all" />
           </div>
 
           <div class="mb-4">
             <label for="subject" class="block text-gray-700 dark:text-gray-200 font-medium mb-1">Subject</label>
             <input type="text" id="subject" name="subject" [(ngModel)]="contactData.subject"
-                   placeholder="Subject"
-                   class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-600 dark:bg-[#242526] dark:text-white dark:focus:border-none transition-all" />
+              placeholder="Subject"
+              class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-600 dark:bg-[#242526] dark:text-white dark:focus:border-none transition-all" />
           </div>
 
           <div class="mb-4">
             <label for="message" class="block text-gray-700 dark:text-gray-200 font-medium mb-1">Message</label>
             <textarea id="message" name="message" [(ngModel)]="contactData.message"
-                      placeholder="Leave a message here" rows="4" required
-                      class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-600 dark:bg-[#242526] dark:text-white dark:focus:border-none transition-all"></textarea>
+              placeholder="Leave a message here" rows="4" required
+            class="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-600 dark:bg-[#242526] dark:text-white dark:focus:border-none transition-all"></textarea>
           </div>
 
-          <div *ngIf="!success">
-            <div *ngFor="let error of errors" class="text-red-600 text-sm mb-2">{{ error }}</div>
-          </div>
+          @if (!success) {
+            <div>
+              @for (error of errors; track error) {
+                <div class="text-red-600 text-sm mb-2">{{ error }}</div>
+              }
+            </div>
+          }
 
-          <div *ngIf="success" class="text-green-600 text-sm mb-4">{{ successMessage }}</div>
+          @if (success) {
+            <div class="text-green-600 text-sm mb-4">{{ successMessage }}</div>
+          }
 
           <div>
             <button type="submit"
-                    class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-8 rounded-xl transition">
+              class="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-3 px-8 rounded-xl transition">
               Send Message
             </button>
           </div>

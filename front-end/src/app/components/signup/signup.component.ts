@@ -3,17 +3,15 @@ import {FormBuilder, FormGroup, FormsModule, ReactiveFormsModule} from '@angular
 import {AuthService} from '../../service/auth.service';
 import {Router, RouterLink} from '@angular/router';
 import {ToastrService} from 'ngx-toastr';
-import {NgForOf, NgIf} from '@angular/common';
+
 
 @Component({
   selector: 'app-signup',
   imports: [
     ReactiveFormsModule,
-    NgIf,
     RouterLink,
-    FormsModule,
-    NgForOf
-  ],
+    FormsModule
+],
   templateUrl: './signup.component.html',
   styleUrl: './signup.component.css'
 })

@@ -1,6 +1,6 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import { Post } from '../../model/post';
-import {NgClass, NgForOf, NgIf, NgOptimizedImage} from '@angular/common';
+import { NgClass, NgOptimizedImage } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { TimeagoPipe } from '../../service/timeago.pipe';
 import { TimelineService } from '../../service/timeline.service';
@@ -11,11 +11,9 @@ import {Reply} from '../../model/Reply';
   selector: 'app-post',
   imports: [
     FormsModule,
-    NgForOf,
-    NgIf,
     TimeagoPipe,
     NgClass
-  ],
+],
   templateUrl: './post.component.html',
   styleUrls: ['./post.component.css'],
   standalone: true
@@ -64,6 +62,7 @@ export class PostComponent implements OnInit {
       replies: []
     };
     this.reply = {
+      id: 0,
       content: '',
       user: this.user,
       createdAt: new Date(),
@@ -134,6 +133,7 @@ export class PostComponent implements OnInit {
     if (!replyContent || replyContent.trim() === '') return;
 
     const newReply: Reply = {
+      id: 0,
       content: replyContent,
       user: this.user,
       createdAt: new Date(),
@@ -177,6 +177,11 @@ export class PostComponent implements OnInit {
   deleteComment(id: number) {
     this.timelineService.deleteComment(id).subscribe(() => {
       this.post.commentCount--;
+      this.getCommentsByPostId(this.post.id);
+    });
+  }
+  deleteReply(id: number) {
+    this.timelineService.deleteReply(id).subscribe(() => {
       this.getCommentsByPostId(this.post.id);
     });
   }

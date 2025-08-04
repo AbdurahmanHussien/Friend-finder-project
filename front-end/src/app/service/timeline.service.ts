@@ -56,4 +56,8 @@ export class TimelineService {
   deleteComment(commentId: number): Observable<any> {
     return this.http.delete<any>(`http://localhost:9090/api/comment/${commentId}`);   //http://localhost:9090/api/comment/{{commentId}}
   }
+
+  deleteReply(replyId: number): Observable<any> {
+    return this.http.delete<any>(`http://localhost:9090/api/reply/${replyId}`);   //http://localhost:9090/api/reply/{{replyId}}
+  }
 }

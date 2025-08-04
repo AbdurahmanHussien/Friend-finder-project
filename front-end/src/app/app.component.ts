@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import {NavigationEnd, Router, RouterOutlet} from '@angular/router';
 import {LoaderComponent} from './components/loader/loader.component';
-import {NgClass, NgIf} from '@angular/common';
+import { NgClass } from '@angular/common';
 import {FooterComponent} from './components/footer/footer.component';
 import {HeaderComponent} from './components/header/header.component';
 import {AuthService} from './service/auth.service';
@@ -9,7 +9,7 @@ import {AuthService} from './service/auth.service';
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, LoaderComponent, NgIf, FooterComponent, HeaderComponent, NgClass],
+  imports: [RouterOutlet, LoaderComponent, FooterComponent, HeaderComponent, NgClass],
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })

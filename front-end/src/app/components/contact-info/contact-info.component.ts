@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
+
 
 import {FormsModule} from '@angular/forms';
 import {Router} from '@angular/router';
@@ -9,13 +9,13 @@ import {ContactService} from '../../service/contact.service';
 @Component({
   selector: 'app-contact-info',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [FormsModule],
   templateUrl: './contact-info.component.html',
   styleUrls: ['./contact-info.component.css']
 })
 export class ContactInfoComponent implements OnInit {
 
-  constructor( private _contactService: ContactService , private router: Router) {}
+  constructor( private _contactService: ContactService) {}
 
   ngOnInit(): void {}
 

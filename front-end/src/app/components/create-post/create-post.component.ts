@@ -1,5 +1,5 @@
 import {Component, EventEmitter, OnInit, Output} from '@angular/core';
-import {NgIf} from '@angular/common';
+
 import {FormsModule} from '@angular/forms';
 import {TimelineService} from '../../service/timeline.service';
 import {ToastrService} from 'ngx-toastr';
@@ -8,9 +8,8 @@ import {AuthService} from '../../service/auth.service';
 @Component({
   selector: 'app-create-post',
   imports: [
-    NgIf,
     FormsModule
-  ],
+],
   templateUrl: './create-post.component.html',
   styleUrls: ['./create-post.component.css']
 })

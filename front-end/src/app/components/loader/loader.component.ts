@@ -1,13 +1,11 @@
 import { Component } from '@angular/core';
-import {NgIf} from '@angular/common';
+
 import {LoaderService} from '../../service/loader.service';
 
 @Component({
   selector: "loader",
   standalone: true,
-  imports: [
-    NgIf
-  ],
+  imports: [],
   templateUrl: './loader.component.html',
   styleUrls: ['./loader.component.css']
 })
