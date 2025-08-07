@@ -13,9 +13,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 @Data
 @Builder
@@ -51,7 +49,7 @@ public class Post{
 	private User user;
 
 	@OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
-	private Set<PostLike> postLikes = new HashSet<>();
+	private List<PostLike> postLikes;
 
 	@CreatedDate
 	private LocalDateTime createdAt;

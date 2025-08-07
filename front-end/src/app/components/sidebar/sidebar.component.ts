@@ -18,6 +18,7 @@ export class SidebarComponent implements OnInit {
 
   @ViewChild('fileInput') fileInput: ElementRef | undefined;
 
+
   triggerFileInput() {
     this.fileInput?.nativeElement.click();
   }
@@ -26,16 +27,23 @@ export class SidebarComponent implements OnInit {
     const file: File = event.target.files[0];
     if (file) {
       this.sidebarService.addAvatar(file).subscribe(res => {
-        this.imageUrl = `http://localhost:9090${res}`;
+        console.log('Uploaded image path:', res.profileImage);
+        this.imageUrl = `http://localhost:9090${res.profileImage}`;
+
+        this.user.profileImage = res.profileImage;
+        localStorage.setItem('user', JSON.stringify(this.user));
       });
     }
   }
+
 
   ngOnInit(): void {
     this.sidebarService.friendsNumber$.subscribe(count => {
       this.friendsNumber = count;
     });
     this.sidebarService.updateFriendsNumber();
+    this.imageUrl = `http://localhost:9090${this.user.profileImage}`;
+
   }
 
   friendsNumber: number = 0
