@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {SuggestionService} from '../../service/suggestion.service';
 import {User} from '../../model/User';
 import {ToastrService} from 'ngx-toastr';
+import {ActivatedRoute, Router} from '@angular/router';
 
 
 @Component({
@@ -12,7 +13,8 @@ import {ToastrService} from 'ngx-toastr';
 })
 export class SuggestionComponent implements OnInit {
 
-  constructor(private suggestionService: SuggestionService, private toastr: ToastrService) { }
+  constructor(private suggestionService: SuggestionService, private toastr: ToastrService, private route: ActivatedRoute,
+              private router: Router ) { }
 
 
   users: User[] = [];
@@ -38,6 +40,15 @@ export class SuggestionComponent implements OnInit {
   }
   onImageError(event: Event) {
     (event.target as HTMLImageElement).src = 'assets/images/unknown.png';
+  }
+
+  goToProfile(id: number) {
+    if(id){
+      this.router.navigate(['profile', id]);
+    } else {
+      console.log('Invalid user ID');
+    }
+
   }
 
 }

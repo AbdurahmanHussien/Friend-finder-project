@@ -26,4 +26,6 @@ public interface IFriendService {
 
     int getFriendCount(Long userId);
 
+	boolean isFriend(Long userId, Long friendId);
+
 }

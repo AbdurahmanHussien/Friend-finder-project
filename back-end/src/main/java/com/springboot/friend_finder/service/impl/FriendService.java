@@ -179,4 +179,11 @@ public class FriendService implements IFriendService {
     public int getFriendCount(Long userId) {
         return friendshipRepository.countFriendsOfUser(userId);
     }
+
+	@Override
+	public boolean isFriend(Long userId, Long friendId) {
+		return friendshipRepository.existsFriendshipBySenderAndReceiverAndStatus(
+				userRepository.findById(userId).orElseThrow(() -> new BadRequestException("user.notfound")),
+				userRepository.findById(friendId).orElseThrow(() -> new BadRequestException("user.notfound")));
+	}
 }

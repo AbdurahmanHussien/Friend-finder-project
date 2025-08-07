@@ -1,0 +1,8 @@
+.video-js {
+  width: 100% !important;
+  height: 300px !important;
+  object-fit: contain;
+  background-color: black;
+  border-radius: 0.5rem;
+  margin-bottom: 1rem;
+}

@@ -41,7 +41,7 @@ export const routes: Routes = [
 
 
 
-RouterModule.forRoot(routes, {
-  scrollPositionRestoration: 'enabled'  // دي بتخلي الصفحة ترجع لفوق
-})
+RouterModule.forRoot(routes, {scrollPositionRestoration: 'enabled'})
+
+export const routing = RouterModule.forRoot(routes, {scrollPositionRestoration: 'enabled'});
 

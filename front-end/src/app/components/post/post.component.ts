@@ -6,14 +6,17 @@ import { TimeagoPipe } from '../../service/timeago.pipe';
 import { TimelineService } from '../../service/timeline.service';
 import {CommentDto} from '../../model/CommentDto';
 import {Reply} from '../../model/Reply';
+import {Router} from '@angular/router';
+import {VideoPlayerComponent} from '../video-player/video-player.component';
 
 @Component({
   selector: 'app-post',
   imports: [
     FormsModule,
     TimeagoPipe,
-    NgClass
-],
+    NgClass,
+    VideoPlayerComponent
+  ],
   templateUrl: './post.component.html',
   styleUrls: ['./post.component.css'],
   standalone: true
@@ -46,7 +49,8 @@ export class PostComponent implements OnInit {
     return this.expandedReplies[commentId] || index < 2;
   }
 
-  constructor(private timelineService: TimelineService) {}
+  constructor(private timelineService: TimelineService
+  , private router: Router) {}
 
   ngOnInit(): void {
     this.user = JSON.parse(localStorage.getItem("user")!);
@@ -132,8 +136,8 @@ export class PostComponent implements OnInit {
     const replyContent = this.replyTexts[commentId];
     if (!replyContent || replyContent.trim() === '') return;
 
+    // @ts-ignore
     const newReply: Reply = {
-      id: 0,
       content: replyContent,
       user: this.user,
       createdAt: new Date(),
@@ -141,7 +145,7 @@ export class PostComponent implements OnInit {
     };
 
     this.timelineService.addReply(newReply).subscribe((reply) => {
-      // @ts-ignore
+
       const targetComment = this.post.comments.find(c => c.id === commentId);
       if (targetComment?.replies) {
         targetComment.replies.push(reply);
@@ -185,5 +189,12 @@ export class PostComponent implements OnInit {
     });
   }
 
+  goToProfile(id: number) {
+    if(id){
+      this.router.navigate(['profile', id]);
+    } else {
+      console.log('Invalid user ID');
+    }
 
+  }
 }

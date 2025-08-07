@@ -1,16 +1,17 @@
 <div class="flex flex-col w-full">
   <!-- Cover -->
-  <div class="relative w-full h-64">
+  <div class="relative w-full h-80">
     <img
       [src]="'http://localhost:9090' + profile.profileCoverImage"
       alt="cover"
       class="w-full h-full object-cover"
-      (error)="onImageError($event)"
+      (error)="onCoverError($event)"
     />
     <div class="absolute -bottom-16 left-10">
       <img
         [src]="'http://localhost:9090' + profile.profileImage"
         alt="profile"
+        (error)="onProfileError($event)"
         class="w-32 h-32 rounded-full border-4 border-white shadow"
       />
     </div>
@@ -32,9 +33,13 @@
         <a class="hover:text-blue-600 cursor-pointer" routerLink="friends">Friends</a>
       </nav>
       @if(user.id == profile.id){
-      <button routerLink="timeline/edit" class="bg-blue-500 text-white px-4 py-1 rounded text-sm">Edit Profile</button>
+      <button routerLink="timeline/edit" class="bg-blue-500 text-white px-4 py-1 rounded-2xl text-sm hover:bg-blue-600">Edit Profile</button>
       } @else{
-      <button class="bg-blue-500 text-white px-4 py-1 rounded text-sm">Add Friend</button>
+        @if(isFriends){
+          <button (click)="removeFriend(profile.id)"  class="bg-blue-500 text-white px-4 py-1 rounded-2xl text-sm hover:bg-red-500 ">Remove Friend</button>
+        } @else {
+      <button (click)="addFriend(profile.id)" class="bg-blue-500 text-white px-4 py-1 rounded-2xl text-sm hover:bg-blue-600">Add Friend</button>
+        }
       }
     </div>
   </div>
@@ -53,8 +58,8 @@
       </div>
 
       <div class="space-y-6">
-        @for (post of posts ; track post.id){
-        <app-post  [post]="post"></app-post>
+        @for (post of posts; track posts){
+          <app-post [post]="post"></app-post>
         }
       </div>
     </div>
@@ -62,7 +67,7 @@
     <!-- Right side: activity -->
     <div class="col-span-12 lg:col-span-4">
       <div class="bg-white dark:bg-[#242526] rounded-lg shadow p-4 space-y-4">
-        <h3 class="text-lg font-bold dark:text-white">Sarah's Activity</h3>
+        <h3 class="text-lg font-bold dark:text-white">User's Activity</h3>
         <ul class="text-sm text-gray-700 dark:text-gray-300 space-y-2">
           @for (action of latestActions; track latestActions){
           <li>

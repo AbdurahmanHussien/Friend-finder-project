@@ -21,4 +21,11 @@ export class SuggestionService {
   }
 
 
+  isFriend(friendId: number): Observable<boolean> {  //GET http://localhost:9090/api/friends/isFriend/{{friendId}}
+    return this.http.get<boolean>(`http://localhost:9090/api/friends/isFriend/${friendId}`);
+  }
+
+  deleteFriend(friendId: number): Observable<any> {  //http://localhost:9090/api/friends/friend/delete?friendId={{$random.integer(100)}}
+    return this.http.delete(`http://localhost:9090/api/friends/friend/delete?friendId=${friendId}`);
+  }
 }

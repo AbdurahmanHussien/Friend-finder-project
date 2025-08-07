@@ -79,4 +79,9 @@ public class FriendshipController {
 		int count = friendService.getFriendCount(user.getId());
 		return ResponseEntity.ok(count);
 	}
+
+	@GetMapping("/isFriend/{friendId}")
+	public ResponseEntity<Boolean> isFriend(@AuthenticationPrincipal CustomUserDetails user, @PathVariable Long friendId) {
+		return ResponseEntity.ok(friendService.isFriend(user.getId(), friendId));
+	}
 }

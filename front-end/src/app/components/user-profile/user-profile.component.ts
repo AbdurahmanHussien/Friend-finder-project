@@ -1,5 +1,5 @@
 import {Component, OnInit} from '@angular/core';
-import {DatePipe} from '@angular/common';
+import {AsyncPipe, DatePipe} from '@angular/common';
 import {Profile} from '../../model/Profile';
 import {ProfileService} from '../../service/profile.service';
 import {TimelineService} from '../../service/timeline.service';
@@ -8,14 +8,20 @@ import {PostComponent} from '../post/post.component';
 import {FormsModule} from '@angular/forms';
 import {ActivatedRoute, RouterLink} from '@angular/router';
 import {SidebarService} from '../../service/sidebar.service';
+import {SuggestionService} from '../../service/suggestion.service';
+import {ToastrService} from 'ngx-toastr';
+import {Observable} from 'rxjs';
+import {TimelineComponent} from '../timeline/timeline.component';
 
 @Component({
   selector: 'app-user-profile',
   imports: [
     DatePipe,
-    PostComponent,
     FormsModule,
-    RouterLink
+    RouterLink,
+    AsyncPipe,
+    TimelineComponent,
+    PostComponent
   ],
   templateUrl: './user-profile.component.html',
   styleUrl: './user-profile.component.css'
@@ -24,6 +30,8 @@ export class UserProfileComponent implements OnInit {
 
 
   user = JSON.parse(localStorage.getItem("user")!);
+
+  isFriends: boolean = false;
 
 
   latestActions: string[] = [
@@ -47,7 +55,9 @@ export class UserProfileComponent implements OnInit {
   constructor(private profileService: ProfileService,
               private timelineService: TimelineService,
               private route: ActivatedRoute,
-              private sidebarService: SidebarService
+              private sidebarService: SidebarService,
+              private suggestionService: SuggestionService,
+              private toastr: ToastrService
   ) { }
 
 
@@ -56,7 +66,7 @@ export class UserProfileComponent implements OnInit {
   friendsNumber: number = 0
 
   ngOnInit(): void {
-
+    window.scrollTo({ top: 0, behavior: 'smooth' });
     const userId = this.route.snapshot.params['id'];
     this.profileService.getProfile(userId).subscribe(user => {
       this.profile = user;
@@ -71,9 +81,26 @@ export class UserProfileComponent implements OnInit {
       this.friendsNumber = count;
     });
     this.sidebarService.updateFriendsNumber();
+    this.checkFriendStatus(userId);
 
     }
 
+  addFriend(userId: number) {
+    this.suggestionService.sendFriendRequest(userId).subscribe(() => {
+      this.toastr.success('Friend request sent to !'+ this.profile.name, 'Friend Request', {
+        timeOut: 5000,
+        positionClass: 'toast-bottom-right',
+        progressBar: true,
+        closeButton: true
+      });
+    });
+  }
+
+  checkFriendStatus(userId: number) {
+    this.suggestionService.isFriend(userId).subscribe((res) => {
+      this.isFriends = res;
+    });
+  }
 
     getProfile(id: number) {
       this.profileService.getProfile(id).subscribe(profile => {
@@ -93,10 +120,16 @@ export class UserProfileComponent implements OnInit {
   }
 
 
-  onImageError( event:Event) {
+  onCoverError( event:Event) {
     (event.target as HTMLImageElement).src = 'assets/images/missing.png';
 
   }
+  onProfileError( event:Event) {
+    (event.target as HTMLImageElement).src = 'assets/images/unknown.png';
+
+  }
+
+
   getFriendsNumber(){
     return this.sidebarService.getFriendsNumber().subscribe(res => {
       this.friendsNumber = res;
@@ -117,5 +150,15 @@ export class UserProfileComponent implements OnInit {
     return age;
   }
 
+  removeFriend(userId: number) {
+    this.suggestionService.deleteFriend(userId).subscribe(() => {
+      this.toastr.error('You unfriended '+ this.profile.name, '', {
+        timeOut: 5000,
+        positionClass: 'toast-bottom-right',
+        progressBar: true,
+        closeButton: true
+      });
+    });
+  }
 }
 
