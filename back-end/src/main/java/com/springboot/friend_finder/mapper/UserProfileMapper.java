@@ -18,6 +18,9 @@ public interface UserProfileMapper {
     @Mapping(target = "phoneNum", source = "user.userDetails.phoneNum")
     @Mapping(target = "gender", source = "user.userDetails.gender")
     @Mapping(target = "profileImage", source = "user.userDetails.profileImage")
+    @Mapping(target = "profileCoverImage", source = "user.userDetails.profileCoverImage")
+    @Mapping(target = "about", source = "user.userDetails.about")
+    @Mapping(target = "birthDate", source = "user.userDetails.birthDate")
     @Mapping(target = "postsId", source = "user.post")
     UserProfileDto toDto(User user);
 

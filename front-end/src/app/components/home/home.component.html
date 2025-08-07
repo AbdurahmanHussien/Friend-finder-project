@@ -4,7 +4,8 @@
   </div>
 
   <div class="col-span-7 space-y-2">
-    <app-create-post (postCreated)="timelineRef.loadPosts()"></app-create-post>
+    <app-create-post  (contentCreated)="timelineRef.reloadBasedOnCurrentView()"
+    ></app-create-post>
 
     <app-timeline #timelineRef></app-timeline>
   </div>

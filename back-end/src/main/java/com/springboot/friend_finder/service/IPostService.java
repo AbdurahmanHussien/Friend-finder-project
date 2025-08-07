@@ -22,4 +22,8 @@ public interface IPostService {
 
 	List<PostDto> getTimelinePosts(Long userId);
 
+	List<PostDto> getTimelineImagePosts(Long userId);
+
+	List<PostDto> getTimelineVideoPosts(Long userId);
+
 }

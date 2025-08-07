@@ -21,15 +21,16 @@
 
 
         <div class="relative group ">
-          <button  class="text-sm font-semibold text-gray-700 dark:text-gray-300 hover:text-blue-700 dark:hover:text-blue-400">
+          <button (click)="toggleTimelineMenu()"   class="text-sm font-semibold text-gray-700 dark:text-gray-300 hover:text-blue-700 dark:hover:text-blue-400">
             <i class="fas fa-bars-progress mr-1 text-xl"></i>
           </button>
-          <div class="absolute hidden group-hover:block bg-white dark:bg-[#242526] shadow-md mt-2 rounded-2xl w-48">
-            <a routerLink="/timeline" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700">Timeline</a>
-            <a routerLink="/timeline-about" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700">Timeline About</a>
-            <a routerLink="/timeline-album" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700">Timeline Album</a>
-            <a routerLink="/timeline-friends" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700">Timeline Friends</a>
+          @if(timelineMenuOpen()){
+          <div class="absolute bg-white dark:bg-[#242526] shadow-md mt-2 rounded-2xl w-48">
+            <a routerLink="/timeline" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-[#18191a]">Timeline</a>
+            <a routerLink="timeline/videos" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-[#18191a]">Timeline Videos</a>
+            <a routerLink="timeline/album" class="block px-4 py-2 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-[#18191a]">Timeline Album</a>
           </div>
+          }
         </div>
 
         <a  data-tippy-content="Contact Us"
@@ -53,7 +54,7 @@
         </div>
 
         <!-- Profile -->
-        <a href="/profile" class="p-2 rounded-full bg-gray-100 hover:bg-gray-200 dark:bg-[#242526] dark:hover:bg-gray-700">
+        <a [routerLink]="['/profile', user.id]" class="p-2 rounded-full bg-gray-100 hover:bg-gray-200 dark:bg-[#242526] dark:hover:bg-gray-700">
           <i class="fas fa-user-circle text-gray-600 dark:text-gray-200 text-xl"></i>
         </a>
 

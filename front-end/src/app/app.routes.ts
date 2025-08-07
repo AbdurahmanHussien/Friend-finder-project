@@ -8,6 +8,20 @@ export const routes: Routes = [
     loadComponent: () => import('./components/home/home.component').then(m => m.HomeComponent)
   },
   {
+    path: 'timeline/videos', canActivate : [AuthGuard],
+    loadComponent: () => import('./components/home/home.component').then(m => m.HomeComponent)
+  },
+  {
+    path: 'profile/:id', canActivate : [AuthGuard],
+    loadComponent: () => import('./components/user-profile/user-profile.component').then(m => m.UserProfileComponent)
+  },
+
+
+  {
+    path: 'timeline/album', canActivate : [AuthGuard],
+    loadComponent: () => import('./components/home/home.component').then(m => m.HomeComponent)
+  },
+  {
     path: 'login', canActivate : [GuestGuard],
     loadComponent: () => import('./components/login/login.component').then(m => m.LoginComponent)
   },

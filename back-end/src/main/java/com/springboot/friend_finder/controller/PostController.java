@@ -61,6 +61,18 @@ public class PostController {
 		return ResponseEntity.ok(postService.getTimelinePosts(userDetails.getId()));
 	}
 
+	@GetMapping("/timeline/image")
+	public ResponseEntity<List<PostDto>> getTimelineImagePosts(@AuthenticationPrincipal CustomUserDetails userDetails) {
+
+		return ResponseEntity.ok(postService.getTimelineImagePosts(userDetails.getId()));
+	}
+
+	@GetMapping("/timeline/video")
+	public ResponseEntity<List<PostDto>> getTimelineVideoPosts(@AuthenticationPrincipal CustomUserDetails userDetails) {
+
+		return ResponseEntity.ok(postService.getTimelineVideoPosts(userDetails.getId()));
+	}
+
 	@PostMapping("/{postId}/likeUnlike")
 	public ResponseEntity<String> likePost(@PathVariable Long postId,
 	                                     @AuthenticationPrincipal CustomUserDetails userDetails) {

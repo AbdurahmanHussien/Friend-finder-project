@@ -1,5 +1,5 @@
-import {Component, OnInit, computed, effect, inject, signal, OnChanges, AfterViewInit} from '@angular/core';
-import { Router, RouterLink, RouterLinkActive } from '@angular/router';
+import {Component, OnInit, computed, effect, inject, signal, AfterViewInit} from '@angular/core';
+import { RouterLink, RouterLinkActive } from '@angular/router';
 import { HeaderService } from '../../service/header.service';
 import { NotificationService } from '../../service/notification.service';
 import { Friendship } from '../../model/Friendsip';
@@ -38,15 +38,19 @@ export class HeaderComponent implements OnInit, AfterViewInit {
   }
 
 
+  user: any;
+
+
   friendsRequest= signal<Friendship[]>([]);
   requestsMenuOpen = signal(false);
 
+  timelineMenuOpen = signal(false);
 
   friendRequestCount = computed(() => this.friendsRequest().length);
 
   notifications = this.notificationService.notifications;
 
-  private notificationSound = new Audio('assets/sound/notif.wav');
+  private notificationSound = new Audio('../../assets/sound/notif.wav');
 
   constructor() {
 
@@ -68,6 +72,8 @@ export class HeaderComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit(): void {
+   this.user = JSON.parse(localStorage.getItem("user")!);
+
     this.loadFriendRequests();
     this.notificationSound.load();
   }
@@ -86,6 +92,10 @@ export class HeaderComponent implements OnInit, AfterViewInit {
 
   toggleRequestsMenu() {
     this.requestsMenuOpen.update(open => !open);
+  }
+
+  toggleTimelineMenu() {
+    this.timelineMenuOpen.update(open => !open);
   }
 
   loadFriendRequests() {
@@ -129,5 +139,6 @@ export class HeaderComponent implements OnInit, AfterViewInit {
   logout() {
     this.authService.logout();
   }
+
 
 }

@@ -32,7 +32,7 @@ export class CreatePostComponent implements OnInit {
   isVideo = false;
   submitting = false;
 
-  @Output() postCreated = new EventEmitter<void>();
+  @Output() contentCreated = new EventEmitter<unknown>();
 
   onFileSelected(event: Event) {
     const file = (event.target as HTMLInputElement).files?.[0];
@@ -63,7 +63,8 @@ export class CreatePostComponent implements OnInit {
       next: () => {
         this.resetForm();
         this.toastr.success('Post submitted successfully', 'Success');
-        this.postCreated.emit();
+        this.contentCreated.emit();
+
 
       },
       error: (error) => {

@@ -144,16 +144,36 @@ public class PostService implements IPostService {
 
 		List<Post> posts = postRepository.findTimelinePosts(userId);
 
-		List<PostDto> dtos = posts.stream()
-				.map(post -> {
-					boolean isLiked = likeService.existsByUserAndPost(user, post);
-					PostDto dto = postMapper.toDto(post);
-					dto.setLikedByCurrentUser(isLiked);
-					return dto;
-				})
-				.collect(Collectors.toList());
+		return getTimelineDtos(user, posts);
+	}
 
-		return dtos;
+	@Override
+	public List<PostDto> getTimelineImagePosts(Long userId) {
+
+		if (!userRepository.existsById(userId)) {
+			throw new ResourceNotFoundException("user.not.found");
+		}
+
+		User user = userRepository.findById(userId)
+				.orElseThrow(() -> new ResourceNotFoundException("user.not.found"));
+
+		List<Post> posts = postRepository.findTimelineImagePosts(userId);
+
+		return getTimelineDtos(user, posts);
+	}
+
+	@Override
+	public List<PostDto> getTimelineVideoPosts(Long userId) {
+		if (!userRepository.existsById(userId)) {
+			throw new ResourceNotFoundException("user.not.found");
+		}
+
+		User user = userRepository.findById(userId)
+				.orElseThrow(() -> new ResourceNotFoundException("user.not.found"));
+
+		List<Post> posts = postRepository.findTimelineVideoPosts(userId);
+
+		return getTimelineDtos(user, posts);
 	}
 
 
@@ -222,4 +242,17 @@ public class PostService implements IPostService {
     private boolean isVideo(String extension) {
         return extension.equalsIgnoreCase(".mp4") || extension.equalsIgnoreCase(".mov");
     }
+
+	private List<PostDto> getTimelineDtos(User user, List<Post> posts) {
+		List<PostDto> dtos = posts.stream()
+				.map(post -> {
+					boolean isLiked = likeService.existsByUserAndPost(user, post);
+					PostDto dto = postMapper.toDto(post);
+					dto.setLikedByCurrentUser(isLiked);
+					return dto;
+				})
+				.collect(Collectors.toList());
+
+		return dtos;
+	}
 }

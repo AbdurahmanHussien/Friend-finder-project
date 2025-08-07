@@ -21,7 +21,6 @@ import {Reply} from '../../model/Reply';
 export class PostComponent implements OnInit {
   @Input() post!: Post;
 
-
   user: any;
   imageUrl!: string;
 
@@ -52,6 +51,7 @@ export class PostComponent implements OnInit {
   ngOnInit(): void {
     this.user = JSON.parse(localStorage.getItem("user")!);
     this.imageUrl = `http://localhost:9090${this.user.profileImage}`;
+
     this.comment = {
       likedByCurrentUser: false,
       id: 0,
@@ -171,7 +171,6 @@ export class PostComponent implements OnInit {
     this.timelineService.deletePost(postId).subscribe(() => {
       this.onDelete.emit(postId);
     });
-
   }
 
   deleteComment(id: number) {
@@ -185,4 +184,6 @@ export class PostComponent implements OnInit {
       this.getCommentsByPostId(this.post.id);
     });
   }
+
+
 }

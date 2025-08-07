@@ -1,8 +1,38 @@
-@if (posts$ | async; as posts) {
-  @for (post of posts; track post.id) {
-    <app-post class="flex justify-center max-w-2xl mx-auto"
-      [post]="post"
-      (onDelete)="loadPosts()"
-    ></app-post>
+@switch (currentView()) {
+
+  @case ('videos') {
+
+      @if (posts$() | async; as posts) {
+        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 p-4">
+      @for (post of posts; track post.id) {
+        <app-timeline-video
+          [post]="post"
+          (postDeleted)=" loadPostsVideo()"
+        />
+      }</div>
+    }
+  }
+  @case ('album') {
+    @if (posts$() | async; as posts) {
+      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 p-4">
+      @for (post of posts; track post.id) {
+        <app-timeline-album
+          [post]="post"
+          (postDeleted)=" loadPostsAlbum()"
+        />
+      }
+        </div>
+    }
+  }
+  @default {
+    @if (posts$()  | async; as posts) {
+      @for (post of posts; track post.id) {
+        <app-post
+          class="flex justify-center max-w-2xl mx-auto"
+          [post]="post"
+          (onDelete)="loadPosts()"
+        ></app-post>
+      }
+    }
   }
 }

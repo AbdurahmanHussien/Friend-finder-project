@@ -82,7 +82,6 @@ export class NotificationService {
       console.log('🔌 STOMP: WebSocket connection closed.');
     }
 
-
     this.client.activate();
   }
 

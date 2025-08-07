@@ -53,6 +53,9 @@ public class UserProfileService implements IUserProfileService {
         userDetails.setName(userProfileDto.getName());
         userDetails.setPhoneNum(userProfileDto.getPhoneNum());
         userDetails.setGender(userProfileDto.getGender());
+        userDetails.setAbout(userProfileDto.getAbout());
+        userDetails.setBirthDate(userProfileDto.getBirthDate());
+        userDetails.setProfileCoverImage(userProfileDto.getProfileCoverImage());
 
         User updatedUser = userRepository.save(user);
         return userProfileMapper.toDto(updatedUser);

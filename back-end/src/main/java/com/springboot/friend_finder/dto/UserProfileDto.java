@@ -7,6 +7,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Data
@@ -24,6 +25,12 @@ public class UserProfileDto {
 	private Gender gender;
 
 	private String profileImage;
+
+	private String profileCoverImage;
+
+	private String about;
+
+	private LocalDate birthDate;
 
 	private List<Long> postsId;
 }

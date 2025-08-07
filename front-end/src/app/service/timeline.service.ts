@@ -60,4 +60,16 @@ export class TimelineService {
   deleteReply(replyId: number): Observable<any> {
     return this.http.delete<any>(`http://localhost:9090/api/reply/${replyId}`);   //http://localhost:9090/api/reply/{{replyId}}
   }
+
+  getTimelineAlbum(): Observable<Post[]> {
+    return this.http.get<Post[]>(`${this.baseUrl}/timeline/image`);
+  }
+
+  getTimelineVideo(): Observable<Post[]> {
+    return this.http.get<Post[]>(`${this.baseUrl}/timeline/video`);
+  }
+
+  getPostByUserId(userId: number): Observable<Post[]> {
+    return this.http.get<Post[]>(`http://localhost:9090/api/posts/user/${userId}`);   //http://localhost:9090/api/posts/user/{{userId}}
+  }
 }

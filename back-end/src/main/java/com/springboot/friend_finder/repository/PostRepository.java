@@ -26,5 +26,33 @@ public interface PostRepository extends JpaRepository<Post, Long> {
 			Order by p.createdAt DESC
 			""")
 	List<Post> findTimelinePosts(@Param("userId") Long userId);
-	;
+
+	@Query("""
+	SELECT p FROM Post p WHERE
+	p.mediaType = 'image' AND
+	(p.user.id IN (
+		SELECT CASE
+			WHEN f.sender.id = :userId THEN f.receiver.id
+			WHEN f.receiver.id = :userId THEN f.sender.id
+		END FROM Friendship f
+		WHERE (f.sender.id = :userId OR f.receiver.id = :userId) AND f.status = 'ACCEPTED')
+		OR p.user.id = :userId)
+	ORDER BY p.createdAt DESC
+""")
+	List<Post> findTimelineImagePosts(@Param("userId") Long userId);
+
+	@Query("""
+	SELECT p FROM Post p WHERE
+	p.mediaType = 'video' AND
+	(p.user.id IN (
+		SELECT CASE
+			WHEN f.sender.id = :userId THEN f.receiver.id
+			WHEN f.receiver.id = :userId THEN f.sender.id
+		END FROM Friendship f
+		WHERE (f.sender.id = :userId OR f.receiver.id = :userId) AND f.status = 'ACCEPTED')
+		OR p.user.id = :userId)
+	ORDER BY p.createdAt DESC
+""")
+	List<Post> findTimelineVideoPosts(@Param("userId") Long userId);
+
 }

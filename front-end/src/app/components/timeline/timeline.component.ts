@@ -2,39 +2,72 @@ import {
   Component,
   Input,
   Output,
-  EventEmitter, ViewChild
+  EventEmitter, ViewChild, signal, computed
 } from '@angular/core';
 import { Post } from '../../model/post';
 import {BehaviorSubject, Observable} from 'rxjs';
 import { AsyncPipe } from '@angular/common';
 import { PostComponent } from '../post/post.component';
 import {TimelineService} from '../../service/timeline.service';
+import {TimelineVideoComponent} from '../timeline-video/timeline-video.component';
+import {TimelineAlbumComponent} from '../timeline-album/timeline-album.component';
+import {ActivatedRoute, UrlSegment} from '@angular/router';
 
 @Component({
   selector: 'app-timeline',
   imports: [
     AsyncPipe,
-    PostComponent
-],
+    PostComponent,
+    TimelineVideoComponent,
+    TimelineAlbumComponent
+  ],
   templateUrl: './timeline.component.html',
   styleUrls: ['./timeline.component.css'],
   standalone: true
 })
 export class TimelineComponent {
-  constructor(private timelineService: TimelineService) {
+  constructor(private timelineService: TimelineService, private route: ActivatedRoute) {
+
   }
+
+  currentView = signal<'posts' | 'videos' | 'album'>('posts');
 
 
 
   postsSubject = new BehaviorSubject<Post[]>([]);
+  postsAlbumSubject = new BehaviorSubject<Post[]>([]);
+  postsVideoSubject = new BehaviorSubject<Post[]>([]);
 
-  get posts$(): Observable<Post[]> {
-    return this.postsSubject.asObservable();
-  }
+  posts$ = computed(() => {
+    const view = this.currentView();
+    if (view === 'videos') {
+      return this.postsVideoSubject.asObservable();
+    } else if (view === 'album') {
+      return this.postsAlbumSubject.asObservable();
+    } else {
+      return this.postsSubject.asObservable();
+    }
+  });
+
+
 
   ngOnInit(): void {
-    this.loadPosts();
+    this.route.url.subscribe((segments: UrlSegment[]) => {
+      const lastSegment = segments[segments.length - 1]?.path;
+
+      if (lastSegment === 'videos') {
+        this.currentView.set('videos');
+      } else if (lastSegment === 'album') {
+        this.currentView.set('album');
+      } else {
+        this.currentView.set('posts');
+      }
+
+      this.reloadBasedOnCurrentView();
+    });
   }
+
+
 
 
   loadPosts() {
@@ -43,9 +76,34 @@ export class TimelineComponent {
     });
   }
 
+  loadPostsVideo() {
+    this.timelineService.getTimelineVideo().subscribe(posts => {
+      this.postsVideoSubject.next(posts);
+    });
+  }
+
+  loadPostsAlbum() {
+    this.timelineService.getTimelineAlbum().subscribe(posts => {
+      this.postsAlbumSubject.next(posts);
+    });
+  }
+
   confirmDelete(id: number) {
     this.timelineService.deletePost(id).subscribe(() => {
       this.loadPosts();
     });
   }
+
+  reloadBasedOnCurrentView() {
+    const view = this.currentView();
+
+    if (view === 'videos') {
+      this.loadPostsVideo();
+    } else if (view === 'album') {
+      this.loadPostsAlbum();
+    } else {
+      this.loadPosts();
+    }
+  }
+
 }
