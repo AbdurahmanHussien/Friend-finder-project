@@ -1,11 +1,9 @@
 import {
   Component,
-  Input,
-  Output,
-  EventEmitter, ViewChild, signal, computed
+   signal, computed
 } from '@angular/core';
 import { Post } from '../../model/post';
-import {BehaviorSubject, Observable} from 'rxjs';
+import {BehaviorSubject} from 'rxjs';
 import { AsyncPipe } from '@angular/common';
 import { PostComponent } from '../post/post.component';
 import {TimelineService} from '../../service/timeline.service';

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { TimelineComponent } from '../timeline/timeline.component';
 import { CreatePostComponent } from '../create-post/create-post.component';
 import { SuggestionComponent } from '../suggestion/suggestion.component';

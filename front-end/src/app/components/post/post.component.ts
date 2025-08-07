@@ -1,6 +1,6 @@
 import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import { Post } from '../../model/post';
-import { NgClass, NgOptimizedImage } from '@angular/common';
+import { NgClass } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { TimeagoPipe } from '../../service/timeago.pipe';
 import { TimelineService } from '../../service/timeline.service';
