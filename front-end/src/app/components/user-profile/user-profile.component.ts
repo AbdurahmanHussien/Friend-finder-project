@@ -1,4 +1,4 @@
-import {Component, OnInit, signal, Signal} from '@angular/core';
+import {Component, OnInit, signal} from '@angular/core';
 import {DatePipe} from '@angular/common';
 import {Profile} from '../../model/Profile';
 import {ProfileService} from '../../service/profile.service';
@@ -10,7 +10,6 @@ import {ActivatedRoute, RouterLink} from '@angular/router';
 import {SidebarService} from '../../service/sidebar.service';
 import {SuggestionService} from '../../service/suggestion.service';
 import {ToastrService} from 'ngx-toastr';
-import {Observable} from 'rxjs';
 import {TimelineAlbumComponent} from '../timeline-album/timeline-album.component';
 import {TimelineVideoComponent} from '../timeline-video/timeline-video.component';
 import {User} from '../../model/User';
