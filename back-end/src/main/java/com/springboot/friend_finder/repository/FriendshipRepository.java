@@ -32,6 +32,11 @@ public interface FriendshipRepository extends JpaRepository<Friendship, Long> {
 
 	void deleteFriendshipById(Long id);
 
+
+	@Query("""
+			SELECT fr FROM Friendship fr
+						WHERE fr.sender = :sender AND fr.receiver = :receiver
+			 OR fr.sender = :receiver AND fr.receiver = :sender""")
 	Optional<Friendship> findBySenderAndReceiver(User sender, User receiver);
 
 

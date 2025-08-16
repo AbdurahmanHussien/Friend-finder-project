@@ -1,7 +1,6 @@
 import {Component, ElementRef, OnInit, ViewChild} from '@angular/core';
 import {SidebarService} from '../../service/sidebar.service';
 import {RouterLink, RouterLinkActive} from '@angular/router';
-import {NgOptimizedImage} from '@angular/common';
 
 @Component({
   selector: 'app-sidebar',
@@ -41,7 +40,7 @@ export class SidebarComponent implements OnInit {
     this.sidebarService.friendsNumber$.subscribe(count => {
       this.friendsNumber = count;
     });
-    this.sidebarService.updateFriendsNumber();
+    this.sidebarService.updateFriendsNumber(this.user.id);
     this.imageUrl = `http://localhost:9090${this.user.profileImage}`;
 
   }
@@ -56,8 +55,8 @@ export class SidebarComponent implements OnInit {
     (event.target as HTMLImageElement).src = 'assets/images/unknown.png';
   }
 
-  getFriendsNumber(){
-    return this.sidebarService.getFriendsNumber().subscribe(res => {
+  getFriendsNumber(userId: number) {
+    return this.sidebarService.getFriendsNumber(userId).subscribe(res => {
       this.friendsNumber = res;
     });
   }

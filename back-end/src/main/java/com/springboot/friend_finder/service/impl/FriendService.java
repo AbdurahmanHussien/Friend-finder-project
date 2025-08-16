@@ -3,7 +3,6 @@ package com.springboot.friend_finder.service.impl;
 import com.springboot.friend_finder.constant.RequestStatus;
 import com.springboot.friend_finder.dto.FriendRequestNotification;
 import com.springboot.friend_finder.dto.FriendshipDto;
-import com.springboot.friend_finder.dto.authDto.UserDto;
 import com.springboot.friend_finder.dto.authDto.UserPost;
 import com.springboot.friend_finder.entity.Friendship;
 import com.springboot.friend_finder.entity.auth.User;
@@ -40,10 +39,10 @@ public class FriendService implements IFriendService {
 
 
 	@Override
-	public List<UserDto> getFriends(Long userId) {
+	public List<UserPost> getFriends(Long userId) {
 		List<User> friends = friendshipRepository.findFriendsOfUser(userId);
 
-		return userMapper.toDtoList(friends);
+		return userMapper.userToUserPostList(friends);
 	}
 
 	@Override

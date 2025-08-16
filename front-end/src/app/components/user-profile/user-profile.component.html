@@ -22,20 +22,20 @@
     <div>
       <h2 class="text-2xl font-bold dark:text-white">{{ profile.name }}</h2>
       <p class="text-gray-600 dark:text-gray-400">{{ profile.about }}</p>
-      <p class="text-sm text-gray-500 mt-1">Number of friends:   {{friendsNumber}}</p>
+      <p class="text-sm text-gray-500 mt-1">Number of friends:   {{NO_friends()}}</p>
     </div>
 
     <div class="flex gap-4 mt-4 lg:mt-0 items-center">
       <nav class="flex gap-4 text-sm font-medium text-gray-600 dark:text-gray-400">
-        <a class="hover:text-blue-600 cursor-pointer" routerLink="timeline">Timeline</a>
-        <a class="hover:text-blue-600 cursor-pointer" routerLink="album">photos</a>
-        <a class="hover:text-blue-600 cursor-pointer" routerLink="album">videos</a>
-        <a class="hover:text-blue-600 cursor-pointer" routerLink="friends">Friends</a>
+        <a class="hover:text-blue-600 cursor-pointer" (click)="setView('timeline')">Timeline</a>
+        <a class="hover:text-blue-600 cursor-pointer" (click)="setView('album')">photos</a>
+        <a class="hover:text-blue-600 cursor-pointer" (click)="setView('videos')">videos</a>
+        <a class="hover:text-blue-600 cursor-pointer" (click)="setView('friends')">Friends</a>
       </nav>
       @if(user.id == profile.id){
       <button routerLink="timeline/edit" class="bg-blue-500 text-white px-4 py-1 rounded-2xl text-sm hover:bg-blue-600">Edit Profile</button>
       } @else{
-        @if(isFriends){
+        @if(isFriends()){
           <button (click)="removeFriend(profile.id)"  class="bg-blue-500 text-white px-4 py-1 rounded-2xl text-sm hover:bg-red-500 ">Remove Friend</button>
         } @else {
       <button (click)="addFriend(profile.id)" class="bg-blue-500 text-white px-4 py-1 rounded-2xl text-sm hover:bg-blue-600">Add Friend</button>
@@ -58,10 +58,82 @@
       </div>
 
       <div class="space-y-6">
-        @for (post of posts; track posts){
-          <app-post [post]="post"></app-post>
+        @switch (currentView()) {
+
+          @case ('videos') {
+            @if (posts().length == 0) {
+              <div class="flex justify-center items-center py-20">
+                <p class="text-lg font-semibold text-gray-700 dark:text-gray-300">
+                  No videos yet
+                </p>
+              </div>
+            } @else {
+              <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 p-4">
+                @for (post of posts(); track post.id) {
+                  <app-timeline-video
+                    [post]="post"
+                    (postDeleted)="loadUserVideos(profile.id)"
+                  />
+                }
+              </div>
+            }
+          }
+
+
+          @case ('album') {
+            @if(posts().length == 0){
+              <div class="flex justify-center items-center">
+                <p class="text-xl font-semibold text-gray-600 dark:text-gray-300">No Photos yet</p>
+              </div>
+            }@else{
+            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 p-4">
+              @for (post of posts(); track post.id) {
+                <app-timeline-album
+                  [post]="post"
+                  (postDeleted)="loadUserAlbums(profile.id)"
+                />
+              }
+            </div>
+          }
+          }
+          @case ('friends') {
+            @if(friends().length == 0){
+              <div class="flex justify-center items-center">
+                <p class="text-xl font-semibold text-gray-600 dark:text-gray-300">No friends yet</p>
+              </div>
+            }
+            @else{
+            <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-6 p-4">
+
+              @for (friend of friends(); track friend.id) {
+                <app-friends
+                  [friend]="friend"
+                  [profileId]="profile.id"
+                  (friendRemoved)="removeFriend($event)"
+                />
+              }
+            </div>
+          }
+          }
+
+          @default {
+            @if (posts().length == 0){
+             <div class="flex justify-center items-center">
+               <p class="text-xl font-semibold text-gray-600 dark:text-gray-300">No posts yet</p>
+               </div>
+            }@else{
+            @for (post of posts(); track post.id) {
+              <app-post
+                class="flex justify-center max-w-2xl mx-auto"
+                [post]="post"
+                (onDelete)="loadUserPosts(profile.id)"
+              ></app-post>
+             }
+           }
+          }
         }
       </div>
+
     </div>
 
     <!-- Right side: activity -->

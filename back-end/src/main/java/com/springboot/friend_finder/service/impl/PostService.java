@@ -176,6 +176,14 @@ public class PostService implements IPostService {
 		return getTimelineDtos(user, posts);
 	}
 
+	@Override
+	public List<PostDto> getPostsByUserAndMediaType(Long userId, String mediaType) {
+		User user = userRepository.findById(userId)
+				.orElseThrow(() -> new ResourceNotFoundException("user.not.found"));
+		List<Post> posts = postRepository.getPostsByUserAndMediaType(user, mediaType);
+		return postMapper.toDtoList(posts);
+	}
+
 
 	@Override
 	@Transactional

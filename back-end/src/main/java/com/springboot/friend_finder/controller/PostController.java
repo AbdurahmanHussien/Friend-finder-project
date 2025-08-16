@@ -85,5 +85,9 @@ public class PostController {
 	public ResponseEntity<PostDto> getPostById(@PathVariable Long postId) {
 		return ResponseEntity.ok(postService.getPostById(postId));
 	}
+	@GetMapping("/user/{userId}/{mediaType}")
+	public ResponseEntity<List<PostDto>> getUserPhotos(@PathVariable Long userId, @PathVariable String mediaType) {
+		return ResponseEntity.ok(postService.getPostsByUserAndMediaType(userId, mediaType));
+	}
 }
 

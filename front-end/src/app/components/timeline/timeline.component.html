@@ -10,7 +10,11 @@
           (postDeleted)=" loadPostsVideo()"
         />
       }</div>
-    }
+    } @else {
+        <div class="flex justify-center items-center">
+          <p class="text-xl font-semibold text-gray-600 dark:text-gray-300">No videos yet</p>
+        </div>
+      }
   }
   @case ('album') {
     @if (posts$() | async; as posts) {
@@ -22,7 +26,11 @@
         />
       }
         </div>
-    }
+    } @else {
+        <div class="flex justify-center items-center">
+          <p class="text-xl font-semibold text-gray-600 dark:text-gray-300">No Photos yet</p>
+        </div>
+      }
   }
   @default {
     @if (posts$()  | async; as posts) {
@@ -33,6 +41,10 @@
           (onDelete)="loadPosts()"
         ></app-post>
       }
-    }
+    }@else {
+        <div class="flex justify-center items-center">
+          <p class="text-xl font-semibold text-gray-600 dark:text-gray-300">No posts yet</p>
+        </div>
+      }
   }
 }

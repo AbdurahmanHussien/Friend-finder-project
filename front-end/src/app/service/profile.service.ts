@@ -13,4 +13,5 @@ export class ProfileService {
   getProfile(userId: number): Observable<any> {
     return this.http.get(`http://localhost:9090/api/profile/${userId}`);
   }
+
 }

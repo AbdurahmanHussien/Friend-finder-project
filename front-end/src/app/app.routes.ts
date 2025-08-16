@@ -34,6 +34,10 @@ export const routes: Routes = [
     loadComponent: () => import('./components/contact-info/contact-info.component').then(m => m.ContactInfoComponent)
   },
   {
+    path:'profile/:id/friends', canActivate : [AuthGuard],
+    loadComponent: () => import('./components/friends/friends.component').then(m => m.FriendsComponent)
+  },
+  {
     path: '**',
     redirectTo: 'timeline'
   }

@@ -13,12 +13,12 @@ export class SidebarService {
   private friendsNumberSubject = new BehaviorSubject<number>(0);
   friendsNumber$ = this.friendsNumberSubject.asObservable();
 
-  getFriendsNumber(): Observable<any> {
-    return this.http.get<number>(` http://localhost:9090/api/friends/count`);
+  getFriendsNumber(userId: number): Observable<any> {
+    return this.http.get<number>(` http://localhost:9090/api/friends/count/${userId}`);
   }
 
-  updateFriendsNumber() {
-    this.getFriendsNumber().subscribe(count => {
+  updateFriendsNumber(userId: number) {
+    this.getFriendsNumber(userId).subscribe(count => {
       this.friendsNumberSubject.next(count);
     });
   }
@@ -29,5 +29,10 @@ export class SidebarService {
      const formData = new FormData();
     formData.append('avatar', file);
     return this.http.post<any>('http://localhost:9090/api/profile/avatar', formData);
+  }
+
+  getFriendsByUserId(userId: number): Observable<any> {
+    return this.http.get(`http://localhost:9090/api/friends/${userId}/friends`);
+
   }
 }

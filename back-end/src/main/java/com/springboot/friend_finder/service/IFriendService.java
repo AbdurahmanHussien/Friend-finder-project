@@ -1,14 +1,13 @@
 package com.springboot.friend_finder.service;
 
 import com.springboot.friend_finder.dto.FriendshipDto;
-import com.springboot.friend_finder.dto.authDto.UserDto;
 import com.springboot.friend_finder.dto.authDto.UserPost;
 
 import java.util.List;
 
 public interface IFriendService {
 
-	List<UserDto> getFriends(Long userId);
+	List<UserPost> getFriends(Long userId);
 
 	FriendshipDto acceptFriendRequest(Long senderId, Long receiverId);
 

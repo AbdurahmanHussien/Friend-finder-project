@@ -26,4 +26,6 @@ public interface IPostService {
 
 	List<PostDto> getTimelineVideoPosts(Long userId);
 
+	List<PostDto> getPostsByUserAndMediaType(Long userId, String mediaType);
+
 }

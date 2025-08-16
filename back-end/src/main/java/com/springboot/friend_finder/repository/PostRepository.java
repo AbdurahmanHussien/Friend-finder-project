@@ -55,4 +55,5 @@ public interface PostRepository extends JpaRepository<Post, Long> {
 """)
 	List<Post> findTimelineVideoPosts(@Param("userId") Long userId);
 
+	List<Post> getPostsByUserAndMediaType(User user, String mediaType);
 }

@@ -1,7 +1,6 @@
 package com.springboot.friend_finder.controller;
 
 import com.springboot.friend_finder.dto.FriendshipDto;
-import com.springboot.friend_finder.dto.authDto.UserDto;
 import com.springboot.friend_finder.dto.authDto.UserPost;
 import com.springboot.friend_finder.service.auth.CustomUserDetails;
 import com.springboot.friend_finder.service.impl.FriendService;
@@ -44,9 +43,9 @@ public class FriendshipController {
 		return ResponseEntity.ok(result);
 	}
 
-	@GetMapping
-	public ResponseEntity<List<UserDto>> getFriends(@AuthenticationPrincipal CustomUserDetails user) {
-		List<UserDto> result = friendService.getFriends(user.getId());
+	@GetMapping("{userId}/friends")
+	public ResponseEntity<List<UserPost>> getFriends(@PathVariable Long userId) {
+		List<UserPost> result = friendService.getFriends(userId);
 		return ResponseEntity.ok(result);
 	}
 
@@ -74,9 +73,9 @@ public class FriendshipController {
 		return ResponseEntity.ok(result);
 	}
 
-	@GetMapping("/count")
-	public ResponseEntity<Integer> getFriendCount(@AuthenticationPrincipal CustomUserDetails user) {
-		int count = friendService.getFriendCount(user.getId());
+	@GetMapping("/count/{userId}")
+	public ResponseEntity<Integer> getFriendCount(@PathVariable Long userId) {
+		int count = friendService.getFriendCount(userId);
 		return ResponseEntity.ok(count);
 	}
 

@@ -72,4 +72,14 @@ export class TimelineService {
   getPostByUserId(userId: number): Observable<Post[]> {
     return this.http.get<Post[]>(`http://localhost:9090/api/posts/user/${userId}`);   //http://localhost:9090/api/posts/user/{{userId}}
   }
+
+  getUserVideos(userId: number): Observable<Post[]> {
+    return this.http.get<Post[]>(`http://localhost:9090/api/posts/user/${userId}/video`);
+  }
+
+  getUserAlbums(userId: number) : Observable<Post[]> {
+    return this.http.get<Post[]>(`http://localhost:9090/api/posts/user/${userId}/image`);
+  }
+
+  //GET http://localhost:9090/api/posts/user/{{userId}}/{{mediaType}}
 }

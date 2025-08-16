@@ -109,7 +109,7 @@ export class HeaderComponent implements OnInit, AfterViewInit {
     this.headerService.acceptRequest(requestId).subscribe(() => {
       this.friendsRequest.update(friends => friends.filter(f => f.id !== requestId));
       this.loadFriendRequests();
-      this.sidebarService.updateFriendsNumber();
+      this.sidebarService.updateFriendsNumber(this.user.id);
       this.toastr.success('Friend request accepted!', 'Friend Request', {
         timeOut: 5000,
         positionClass: 'toast-bottom-right',
